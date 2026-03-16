@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Want to Hide — Food & Body Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dusk:        #7a5f8a;
+  --dusk-mid:    #a488b4;
+  --dusk-light:  #f2eef7;
+  --sage:        #3d6b4f;
+  --sage-light:  #eaf2ec;
+  --text:        #2d2926;
+  --text-mid:    #5a5250;
+  --text-light:  #8c8280;
+  --border:      #ddd0e4;
+  --bg:          #faf8fc;
+  --radius:      14px;
+  --radius-sm:   8px;
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,248,252,0.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px; display: flex; align-items: center;
+  justify-content: space-between; height: 54px;
+}
+.nav-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem; color: var(--dusk); text-decoration: none;
+}
+.nav-back {
+  font-size: 0.82rem; color: var(--text-light); text-decoration: none;
+  border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--dusk); border-color: var(--dusk); }
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 600px; margin: 40px auto 80px; padding: 0 16px;
+}
+
+/* ── STEP HEADING ── */
+.step-eyebrow {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--dusk-mid); margin-bottom: 6px;
+}
+.step-heading {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem; color: var(--dusk); line-height: 1.2; margin-bottom: 20px;
+}
+
+/* ── INTRO CARD ── */
+.intro-card {
+  background: var(--dusk-light);
+  border: 1.5px solid #d8c8e8;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  font-size: 0.92rem; color: var(--text-mid); line-height: 1.75;
+  margin-bottom: 24px;
+}
+
+/* ── OPTION BUTTONS ── */
+.options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.option-btn {
+  width: 100%; text-align: left;
+  background: white; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 18px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+  color: var(--text-mid); cursor: pointer; transition: all 0.18s;
+  display: flex; align-items: center; gap: 12px;
+}
+.option-btn::before {
+  content: ''; flex-shrink: 0;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--dusk-mid); background: white; transition: all 0.15s;
+}
+.option-btn:hover { border-color: var(--dusk); color: var(--text); }
+.option-btn.selected {
+  border-color: var(--dusk); background: var(--dusk-light); color: var(--text);
+  font-weight: 500;
+}
+.option-btn.selected::before {
+  background: var(--dusk); border-color: var(--dusk);
+  box-shadow: inset 0 0 0 3px white;
+}
+
+/* ── SAFETY NOTICE ── */
+.safety-notice {
+  display: none;
+  background: #fff8f8; border: 2px solid #e07070;
+  border-radius: var(--radius); padding: 18px 22px;
+  margin-bottom: 18px;
+}
+.safety-notice.visible { display: block; }
+.safety-heading {
+  font-weight: 600; font-size: 0.93rem; color: #b03030; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 7px;
+}
+.safety-notice p { font-size: 0.9rem; color: #5a2a2a; line-height: 1.7; margin-bottom: 14px; }
+.safety-continue-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+  background: white; color: #b03030; border: 1.5px solid #e07070;
+  border-radius: 20px; padding: 7px 18px; cursor: pointer; transition: all 0.15s;
+}
+.safety-continue-btn:hover { background: #fff0f0; }
+
+/* ── PRIMARY BUTTON ── */
+.primary-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+  background: var(--dusk); color: white; border: none;
+  border-radius: 24px; padding: 12px 28px; cursor: pointer;
+  transition: opacity 0.2s; display: block; width: 100%; margin-top: 8px;
+}
+.primary-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.primary-btn:not(:disabled):hover { opacity: 0.88; }
+
+.secondary-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+  background: white; color: var(--text-light); border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 10px 24px; cursor: pointer;
+  transition: all 0.2s; margin-right: 10px;
+}
+.secondary-btn:hover { border-color: var(--dusk); color: var(--dusk); }
+
+/* ── AUDIO CARD ── */
+.audio-card {
+  background: white; border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px 24px; margin-bottom: 20px;
+}
+.audio-track-label {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--dusk-mid); margin-bottom: 5px;
+}
+.audio-track-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: var(--dusk); margin-bottom: 16px;
+}
+.audio-player-wrap { display: flex; align-items: center; gap: 14px; }
+.play-pause-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: none;
+  background: var(--dusk); color: white; font-size: 1rem;
+  cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.play-pause-btn:hover { opacity: 0.88; transform: scale(1.06); }
+.audio-track-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.audio-progress-bar {
+  width: 100%; height: 4px; background: #e8d8f0;
+  border-radius: 2px; cursor: pointer; position: relative; overflow: hidden;
+}
+.audio-progress-fill {
+  height: 100%; background: var(--dusk); border-radius: 2px;
+  width: 0%; transition: width 0.1s linear;
+}
+.audio-times {
+  display: flex; justify-content: space-between;
+  font-size: 0.72rem; color: var(--text-light);
+}
+.audio-comfort-note {
+  font-size: 0.88rem; color: var(--text-mid); font-style: italic;
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
+}
+
+
+/* ── STEP TRANSITIONS ── */
+.step { display: none; }
+.step.active { display: block; }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="index.html">🧭 Food & Body Compass</a>
+  <a class="nav-back" href="index.html">← Back</a>
+</nav>
+
+<div class="container">
+
+  <!-- ══ STEP 1 ══ -->
+  <div class="step active" id="step-1">
+    <div class="step-eyebrow">Step 1 of 2 &nbsp;·&nbsp; Check in</div>
+    <h1 class="step-heading">I Want to Hide</h1>
+
+    <div class="intro-card">
+      It's okay to feel this way. Before we do anything, let's just name what's happening for you right now.
+    </div>
+
+    <div class="options-list">
+      <button class="option-btn" onclick="selectOption(this, 'overwhelmed')">I am feeling so overwhelmed</button>
+      <button class="option-btn" onclick="selectOption(this, 'disappear')">I just want to disappear</button>
+      <button class="option-btn" onclick="selectOption(this, 'shame')">My body shame is really high</button>
+      <button class="option-btn" onclick="selectOption(this, 'judgment')">I am fearing the judgment of others</button>
+    </div>
+
+    <div class="safety-notice" id="safety-notice">
+      <div class="safety-heading">⚠ A moment before you continue</div>
+      <p>If you're feeling like you might harm yourself or end your life, please contact emergency services or a crisis line right now. You matter, and your safety is what matters most. If you're not at immediate risk, you can continue.</p>
+      <button class="safety-continue-btn" onclick="dismissSafety()">I'm not at immediate risk — continue</button>
+    </div>
+
+    <button class="primary-btn" id="next-btn" disabled onclick="goToStep2()">Next →</button>
+  </div>
+
+  <!-- ══ STEP 2 ══ -->
+  <div class="step" id="step-2">
+    <div class="step-eyebrow">Step 2 of 2 &nbsp;·&nbsp; Listen</div>
+    <h1 class="step-heading">Find a quiet moment</h1>
+
+    <div class="audio-card">
+      <div class="audio-track-label">Now playing</div>
+      <div class="audio-track-name" id="track-name">—</div>
+      <div class="audio-player-wrap">
+        <button class="play-pause-btn" id="play-btn" onclick="toggleAudio()">▶</button>
+        <div class="audio-track-wrap">
+          <div class="audio-progress-bar" id="progress-bar" onclick="seekAudio(event)">
+            <div class="audio-progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="audio-times">
+            <span id="time-current">0:00</span>
+            <span id="time-total">—</span>
+          </div>
+        </div>
+      </div>
+      <audio id="audio-el"></audio>
+      <p class="audio-comfort-note">Find somewhere comfortable. You don't have to do anything except listen.</p>
+    </div>
+
+    <div style="display:flex; align-items:center; margin-bottom:8px;">
+      <button class="secondary-btn" onclick="goToStep1()">← Back</button>
+      <button class="primary-btn" style="margin-top:0; flex:1" onclick="window.location.href='index.html'">Practice Complete</button>
+    </div>
+
+  </div>
+
+</div><!-- end container -->
+
+<script>
+const tracks = {
+  overwhelmed: { name: 'Feeling So Overwhelmed',      src: 'audio/hide.m4a' },
+  disappear:   { name: 'When You Want to Disappear',  src: 'audio/disappear.m4a' },
+  shame:       { name: 'Body Shame',                  src: 'audio/body-shame.m4a' },
+  judgment:    { name: 'Fear of Judgment',             src: 'audio/judgement.m4a' },
+};
+
+let selectedKey = null;
+let safetyDismissed = false;
+const audio = document.getElementById('audio-el');
+
+// ── Option selection ──────────────────────────────────────────────────────
+function selectOption(btn, key) {
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedKey = key;
+
+  const notice = document.getElementById('safety-notice');
+  const nextBtn = document.getElementById('next-btn');
+
+  if (key === 'disappear') {
+    notice.classList.add('visible');
+    safetyDismissed = false;
+    nextBtn.disabled = true;
+  } else {
+    notice.classList.remove('visible');
+    nextBtn.disabled = false;
+  }
+}
+
+function dismissSafety() {
+  document.getElementById('safety-notice').classList.remove('visible');
+  safetyDismissed = true;
+  document.getElementById('next-btn').disabled = false;
+}
+
+// ── Step navigation ───────────────────────────────────────────────────────
+function goToStep2() {
+  if (!selectedKey) return;
+  const track = tracks[selectedKey];
+
+  document.getElementById('track-name').textContent = track.name;
+  audio.src = track.src;
+  audio.load();
+  resetPlayer();
+
+  document.getElementById('step-1').classList.remove('active');
+  document.getElementById('step-2').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep1() {
+  audio.pause();
+  resetPlayer();
+  document.getElementById('step-2').classList.remove('active');
+  document.getElementById('step-1').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Audio player ──────────────────────────────────────────────────────────
+function toggleAudio() {
+  if (audio.paused) {
+    audio.play();
+    document.getElementById('play-btn').textContent = '⏸';
+  } else {
+    audio.pause();
+    document.getElementById('play-btn').textContent = '▶';
+  }
+}
+
+function seekAudio(e) {
+  const bar = document.getElementById('progress-bar');
+  const rect = bar.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  if (audio.duration) audio.currentTime = ratio * audio.duration;
+}
+
+function formatTime(s) {
+  if (!s || isNaN(s)) return '—';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function resetPlayer() {
+  document.getElementById('play-btn').textContent = '▶';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('time-current').textContent = '0:00';
+  document.getElementById('time-total').textContent = '—';
+}
+
+audio.addEventListener('timeupdate', () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('time-current').textContent = formatTime(audio.currentTime);
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  document.getElementById('time-total').textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener('ended', () => {
+  document.getElementById('play-btn').textContent = '▶';
+  document.getElementById('progress-fill').style.width = '100%';
+});
+</script>
+
+</body>
+</html>

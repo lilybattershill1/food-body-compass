@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currently bingeing — Food & Body Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🧭 Food & Body Compass</a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="resources.html">Resources</a>
+    <a class="nav-tab" href="about.html">About</a>
+  </div>
+</nav>
+
+<div class="detail-hero" style="background: var(--rose-light);">
+  <div class="detail-hero-inner">
+    <div class="detail-emoji-big">🫂</div>
+    <div>
+      <button class="back-btn" onclick="window.location.href='index.html'">← Back</button>
+      <h2 style="color:var(--rose)">Currently bingeing</h2>
+      <p class="tagline" style="color:var(--rose)">You're in it right now. This space is for you, without judgement.</p>
+    </div>
+  </div>
+</div>
+
+<div class="detail-body">
+  <div class="whats-going-on">
+    <div class="label" style="color:var(--rose)">What's going on</div>
+    <p>First: you are not bad for this. Bingeing is a coping mechanism, not a character flaw. You can slow down, stop, or keep going — all of those are okay to acknowledge honestly.</p>
+  </div>
+  <div class="steps-label" style="color:var(--rose)">Try this now</div>
+  <div class="step"><div class="step-num" style="background:var(--rose)">1</div><p>You can stop at any point — mid-binge stopping is never failure.</p></div>
+  <div class="step"><div class="step-num" style="background:var(--rose)">2</div><p>If you want to pause: move to a different room, sit down, take 5 slow breaths.</p></div>
+  <div class="step"><div class="step-num" style="background:var(--rose)">3</div><p>Try the audio below.</p></div>
+  <div class="step"><div class="step-num" style="background:var(--rose)">4</div><p>Speak to yourself as you would a close friend — with honesty and without cruelty.<sup><a href="https://doi.org/10.1521/jscp.2007.26.10.1120" class="cite-link" target="_blank" rel="noopener">1</a></sup></p></div>
+  <details class="footnotes-wrap">
+    <summary class="footnotes-toggle">Sources</summary>
+    <div class="footnotes">
+      <div class="footnote"><span class="footnote-num">1</span><span>Adams & Leary (2007). Promoting self-compassionate attitudes toward eating among restrictive and guilty eaters. <em>Journal of Social and Clinical Psychology, 26</em>(10), 1120–1144. <a href="https://doi.org/10.1521/jscp.2007.26.10.1120" target="_blank" rel="noopener">DOI ↗</a></span></div>
+    </div>
+  </details>
+  <div class="resources-section">
+    <div class="resources-label" style="color:var(--rose)">Guided audio</div>
+    <div class="audio-card" style="border-color:var(--rose)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--rose)">Mindful Binge</div>
+          <div class="a-sub">For during a binge — no judgement</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/mindful-binge.m4a" data-color="var(--rose)">
+        <button class="play-btn" style="background:var(--rose)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--rose)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Food & Body Compass &nbsp;·&nbsp; A toolkit for difficult moments</footer>
+<script src="script.js"></script>
+</body>
+</html>

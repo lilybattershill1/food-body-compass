@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Not feeling good in my body — Food & Body Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🧭 Food & Body Compass</a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="resources.html">Resources</a>
+    <a class="nav-tab" href="about.html">About</a>
+  </div>
+</nav>
+
+<div class="detail-hero" style="background: var(--violet-light);">
+  <div class="detail-hero-inner">
+    <div class="detail-emoji-big">🌊</div>
+    <div>
+      <button class="back-btn" onclick="window.location.href='index.html'">← Back</button>
+      <h2 style="color:var(--violet)">Not feeling good in my body</h2>
+      <p class="tagline" style="color:var(--violet)">When your body feels uncomfortable, critical, or hard to be in.</p>
+    </div>
+  </div>
+</div>
+
+<div class="detail-body">
+  <div class="whats-going-on">
+    <div class="label" style="color:var(--violet)">What's going on</div>
+    <p>This might show up as a heavy or disconnected feeling about your body — perhaps after looking in a mirror, trying on clothes, or just waking up. It's a hard place to be, and you don't have to fix it right now.</p>
+  </div>
+  <div class="steps-label" style="color:var(--violet)">Try this now</div>
+  <div class="step"><div class="step-num" style="background:var(--violet)">1</div><p>Pause. Place a hand on your chest — you don't have to do anything yet.</p></div>
+  <div class="step"><div class="step-num" style="background:var(--violet)">2</div><p>Name it: "I'm having a hard body image moment." Labelling reduces its grip.<sup><a href="https://pubmed.ncbi.nlm.nih.gov/17576282/" class="cite-link" target="_blank" rel="noopener">1</a></sup></p></div>
+  <div class="step"><div class="step-num" style="background:var(--violet)">3</div><p>Shift attention to what your body can do, feel, or sense right now.<sup><a href="https://pubmed.ncbi.nlm.nih.gov/26280376/" class="cite-link" target="_blank" rel="noopener">2</a></sup></p></div>
+  <div class="step"><div class="step-num" style="background:var(--violet)">4</div><p>Try one of the guided audios below.</p></div>
+  <details class="footnotes-wrap">
+    <summary class="footnotes-toggle">Sources</summary>
+    <div class="footnotes">
+      <div class="footnote"><span class="footnote-num">1</span><span>Lieberman et al. (2007). Putting feelings into words: affect labeling disrupts amygdala activity in response to affective stimuli. <em>Psychological Science, 18</em>(5), 421–428. <a href="https://pubmed.ncbi.nlm.nih.gov/17576282/" target="_blank" rel="noopener">PubMed ↗</a></span></div>
+      <div class="footnote"><span class="footnote-num">2</span><span>Alleva et al. (2015). Expand Your Horizon: a programme that improves body image and reduces self-objectification by training women to focus on body functionality. <em>Body Image, 15</em>, 81–89. <a href="https://pubmed.ncbi.nlm.nih.gov/26280376/" target="_blank" rel="noopener">PubMed ↗</a></span></div>
+    </div>
+  </details>
+  <div class="resources-section">
+    <div class="resources-label" style="color:var(--violet)">Guided audios</div>
+    <div class="audio-card" style="border-color:var(--violet)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--violet)">Body Neutrality</div>
+          <div class="a-sub">A practice for accepting your body as it is</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/body-neutrality.m4a" data-color="var(--violet)">
+        <button class="play-btn" style="background:var(--violet)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--violet)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="audio-card" style="border-color:var(--violet)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--violet)">Body Shame</div>
+          <div class="a-sub">Working with shame around how your body feels or looks</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/body-shame.m4a" data-color="var(--violet)">
+        <button class="play-btn" style="background:var(--violet)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--violet)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="audio-card" style="border-color:var(--violet)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--violet)">Body Appreciation Practice</div>
+          <div class="a-sub">A longer practice for finding gratitude for your body</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/body-appreciation.m4a" data-color="var(--violet)">
+        <button class="play-btn" style="background:var(--violet)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--violet)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Food & Body Compass &nbsp;·&nbsp; A toolkit for difficult moments</footer>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Do I Actually Need? — Food &amp; Body Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #faf8f5;
+  color: #3a3330;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* ── NAV ──────────────────────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,248,245,0.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e4dcd6;
+  padding: 0 22px; height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-size: 0.95rem; font-weight: 700; color: #6b8f78; text-decoration: none; }
+.nav-back {
+  font-size: 0.82rem; color: #9a8e88; text-decoration: none;
+  border: 1px solid #e4dcd6; border-radius: 20px; padding: 5px 14px;
+  transition: all 0.2s;
+}
+.nav-back:hover { color: #6b8f78; border-color: #6b8f78; }
+
+/* ── PROGRESS BAR ─────────────────────────────────────────────────────────── */
+.progress-wrap {
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px 0 6px; gap: 0;
+}
+.prog-dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #e4dcd6; transition: all 0.35s; flex-shrink: 0;
+}
+.prog-dot.done { background: #6b8f78; }
+.prog-dot.active {
+  background: #6b8f78; transform: scale(1.45);
+  box-shadow: 0 0 0 3px #eef4f0;
+}
+.prog-line {
+  width: 32px; height: 2px; background: #e4dcd6; flex-shrink: 0;
+  transition: background 0.35s;
+}
+.prog-line.done { background: #6b8f78; }
+
+/* ── STEP LABEL ─────────────────────────────────────────────────────────────── */
+.step-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: #9a8e88; margin: 26px 0 8px;
+}
+
+/* ── CONTAINER ────────────────────────────────────────────────────────────── */
+.container { max-width: 560px; margin: 0 auto; padding: 0 22px 90px; }
+
+/* ── STEP TRANSITIONS ─────────────────────────────────────────────────────── */
+.step { display: none; }
+.step.active { display: block; animation: fadeUp 0.32s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── HEADINGS ─────────────────────────────────────────────────────────────── */
+.step-heading {
+  font-size: 1.55rem; font-weight: 700; color: #3a3330;
+  line-height: 1.3; margin-bottom: 18px;
+}
+
+/* ── INTRO CARD ───────────────────────────────────────────────────────────── */
+.intro-card {
+  background: #f3eff9; border: 1.5px solid #ddd0ec;
+  border-radius: 13px; padding: 15px 20px;
+  font-size: 0.92rem; color: #6a5f58; line-height: 1.75; margin-bottom: 22px;
+}
+.intro-card small { font-size: 0.8rem; opacity: 0.75; display: block; margin-top: 4px; }
+
+/* ── TAG PILLS ────────────────────────────────────────────────────────────── */
+.tags-wrap { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 26px; }
+.tag-btn {
+  font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 600;
+  padding: 8px 17px; border-radius: 24px;
+  border: 1.5px solid #e4dcd6; background: white; color: #6a5f58;
+  cursor: pointer; transition: all 0.18s;
+}
+.tag-btn:hover { border-color: #6b8f78; color: #3a5c46; }
+.tag-btn.selected { background: #eef4f0; border-color: #6b8f78; color: #3a5c46; font-weight: 700; }
+.tag-btn.maxed:not(.selected) { opacity: 0.4; cursor: not-allowed; }
+
+/* ── BUTTONS ──────────────────────────────────────────────────────────────── */
+.primary-btn {
+  font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 700;
+  background: #6b8f78; color: white; border: none;
+  border-radius: 28px; padding: 13px 28px;
+  cursor: pointer; display: block; width: 100%; margin-top: 10px;
+  transition: opacity 0.2s;
+}
+.primary-btn:hover:not(:disabled) { opacity: 0.88; }
+.primary-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.secondary-btn {
+  font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 600;
+  background: white; color: #9a8e88; border: 1.5px solid #e4dcd6;
+  border-radius: 28px; padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0;
+}
+.secondary-btn:hover { border-color: #6b8f78; color: #6b8f78; }
+
+.btn-row { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+.btn-row .primary-btn { flex: 1; margin-top: 0; }
+
+/* ── BODY MAP ─────────────────────────────────────────────────────────────── */
+.body-map-wrap {
+  display: flex; flex-direction: column; align-items: center; margin-bottom: 12px;
+}
+.body-svg-outer { width: 160px; margin-bottom: 16px; }
+.body-svg-outer svg { width: 100%; height: auto; overflow: visible; }
+
+/* SVG region styles */
+.body-region {
+  fill: transparent;
+  cursor: pointer;
+  transition: fill 0.2s;
+}
+.body-region:hover { fill: rgba(107, 143, 120, 0.18); }
+.body-region.selected { fill: rgba(107, 143, 120, 0.38); }
+
+.region-label {
+  font-family: 'Nunito', sans-serif;
+  pointer-events: none;
+  user-select: none;
+  fill: #8a7e78;
+}
+
+/* Extra buttons for whole body / can't locate */
+.body-extra-btns {
+  display: flex; gap: 9px; flex-wrap: wrap; justify-content: center;
+}
+.body-extra-btn {
+  font-family: 'Nunito', sans-serif; font-size: 0.84rem; font-weight: 600;
+  padding: 8px 16px; border-radius: 22px;
+  border: 1.5px solid #e4dcd6; background: white; color: #6a5f58;
+  cursor: pointer; transition: all 0.18s;
+}
+.body-extra-btn:hover { border-color: #6b8f78; color: #3a5c46; }
+.body-extra-btn.selected { background: #eef4f0; border-color: #6b8f78; color: #3a5c46; font-weight: 700; }
+
+/* Body interpretation text */
+.body-interp {
+  background: #f3eff9; border: 1.5px solid #ddd0ec;
+  border-radius: 11px; padding: 13px 17px;
+  font-size: 0.88rem; color: #6a5f58; font-style: italic;
+  line-height: 1.7; margin-bottom: 20px;
+  display: none;
+}
+.body-interp.visible { display: block; }
+
+/* ── HUNGER CHECK ─────────────────────────────────────────────────────────── */
+.q-block { margin-bottom: 24px; }
+.q-label { font-size: 0.95rem; font-weight: 700; color: #3a3330; margin-bottom: 11px; }
+
+.pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill-btn {
+  font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 600;
+  padding: 8px 15px; border-radius: 22px;
+  border: 1.5px solid #e4dcd6; background: white; color: #6a5f58;
+  cursor: pointer; transition: all 0.18s;
+}
+.pill-btn:hover { border-color: #6b8f78; }
+.pill-btn.selected { background: #eef4f0; border-color: #6b8f78; color: #3a5c46; font-weight: 700; }
+
+/* Slider */
+.slider-value-display {
+  font-size: 2rem; font-weight: 700; color: #6b8f78;
+  text-align: center; margin: 6px 0 10px; min-height: 2.5rem;
+  transition: color 0.2s;
+}
+.slider-value-display.unset { font-size: 0.85rem; color: #9a8e88; font-weight: 400; padding-top: 10px; }
+.hunger-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 5px; background: #e4dcd6;
+  border-radius: 3px; outline: none; cursor: pointer; display: block;
+}
+.hunger-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+  background: #6b8f78; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.hunger-slider::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #6b8f78; cursor: pointer; border: none;
+}
+.slider-labels {
+  display: flex; justify-content: space-between; margin-top: 7px;
+}
+.slider-label-text { font-size: 0.72rem; color: #9a8e88; }
+
+/* Signal summary */
+.signal-card {
+  border-radius: 11px; padding: 13px 17px;
+  font-size: 0.88rem; font-weight: 600; line-height: 1.55;
+  margin-bottom: 20px; display: none;
+}
+.signal-card.visible { display: block; }
+.signal-card.green { background: #eef4f0; border: 1.5px solid #a8c8b4; color: #3a5c46; }
+.signal-card.amber { background: #fdf5e8; border: 1.5px solid #e0c080; color: #7a5820; }
+.signal-card.neutral { background: #f3eff9; border: 1.5px solid #c8b8d8; color: #5a4870; }
+
+/* ── EMOTION TILES ────────────────────────────────────────────────────────── */
+.emotion-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.emotion-tile {
+  font-family: 'Nunito', sans-serif; font-size: 0.87rem; font-weight: 600;
+  padding: 9px 16px; border-radius: 10px;
+  border: 1.5px solid #e4dcd6; background: white; color: #6a5f58;
+  cursor: pointer; transition: all 0.18s;
+}
+.emotion-tile:hover { border-color: #c47a7a; background: #fdf5f5; color: #6a2a2a; }
+.emotion-tile.selected { background: #fdf0f0; border-color: #c47a7a; color: #7a2a2a; font-weight: 700; }
+.emotion-tile.neutral-tile:hover { border-color: #9b7ab5; background: #f3eff9; color: #5a3a7a; }
+.emotion-tile.neutral-tile.selected { background: #f3eff9; border-color: #9b7ab5; color: #5a3a7a; }
+
+/* Emotion spacer between clusters */
+.emotion-spacer { width: 100%; height: 2px; }
+
+/* Emotion reflection */
+.emotion-reflection {
+  background: #fdf5f5; border: 1.5px solid #e0b0b0;
+  border-radius: 11px; padding: 13px 17px;
+  font-size: 0.88rem; color: #7a4a4a; font-style: italic; line-height: 1.7;
+  margin-bottom: 16px; display: none;
+}
+.emotion-reflection.visible { display: block; }
+
+/* Safety banner */
+.safety-banner {
+  background: #fff8f2; border: 1.5px solid #e8c898;
+  border-radius: 11px; padding: 13px 17px;
+  font-size: 0.88rem; color: #7a5030; line-height: 1.65;
+  margin-bottom: 16px; display: none;
+}
+.safety-banner.visible { display: block; }
+
+/* ── STEP 5 OUTPUT ────────────────────────────────────────────────────────── */
+.out-section { margin-bottom: 28px; }
+.out-section-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: #9a8e88; margin-bottom: 12px;
+}
+
+/* Summary card */
+.summary-card {
+  background: white; border: 1.5px solid #e4dcd6;
+  border-radius: 13px; overflow: hidden;
+}
+.summary-row {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 11px 18px; border-bottom: 1px solid #f0ebe6;
+  font-size: 0.88rem;
+}
+.summary-row:last-child { border-bottom: none; }
+.s-key { font-weight: 700; color: #6a5f58; min-width: 145px; flex-shrink: 0; }
+.s-val { color: #3a3330; }
+
+/* Outcome card */
+.outcome-card {
+  border-radius: 14px; padding: 20px 22px; margin-bottom: 14px;
+}
+.outcome-card.physical { background: #eef4f0; border: 2px solid #a8c8b4; }
+.outcome-card.emotional { background: #fdf0f0; border: 2px solid #e0b0b0; }
+.outcome-card.both      { background: #f3eff9; border: 2px solid #c8b8d8; }
+
+.outcome-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.outcome-card.physical .outcome-label { color: #3a6050; }
+.outcome-card.emotional .outcome-label { color: #8a4040; }
+.outcome-card.both .outcome-label      { color: #5a4070; }
+
+.outcome-text { font-size: 0.93rem; line-height: 1.75; }
+.outcome-card.physical .outcome-text { color: #2a4535; }
+.outcome-card.emotional .outcome-text { color: #6a3030; }
+.outcome-card.both .outcome-text      { color: #3d2d55; }
+
+/* Action cards */
+.action-cards { display: flex; flex-direction: column; gap: 9px; margin-bottom: 24px; }
+.action-card {
+  background: white; border: 1.5px solid #e4dcd6;
+  border-radius: 12px; padding: 14px 18px;
+  font-size: 0.9rem; color: #6a5f58; line-height: 1.65;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.action-card-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.action-card.anchor-card {
+  background: #eef4f0; border-color: #a8c8b4;
+  font-weight: 600; color: #3a5040;
+}
+
+/* Restart button */
+.restart-btn {
+  font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 600;
+  background: white; color: #9a8e88; border: 1.5px solid #e4dcd6;
+  border-radius: 28px; padding: 11px 24px; cursor: pointer;
+  transition: all 0.2s; display: block; width: 100%; text-align: center;
+}
+.restart-btn:hover { border-color: #6b8f78; color: #6b8f78; }
+
+/* ── RESPONSIVE ────────────────────────────────────────────────────────────── */
+@media (max-width: 420px) {
+  .step-heading { font-size: 1.3rem; }
+  .summary-row { flex-direction: column; gap: 3px; }
+  .s-key { min-width: unset; }
+}
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="index.html">🧭 Food & Body Compass</a>
+  <a class="nav-back" href="index.html">← Back</a>
+</nav>
+
+<!-- Progress indicator -->
+<div class="progress-wrap" id="progress-wrap">
+  <div class="prog-dot active"  id="pd-1"></div>
+  <div class="prog-line"        id="pl-1"></div>
+  <div class="prog-dot"         id="pd-2"></div>
+  <div class="prog-line"        id="pl-2"></div>
+  <div class="prog-dot"         id="pd-3"></div>
+  <div class="prog-line"        id="pl-3"></div>
+  <div class="prog-dot"         id="pd-4"></div>
+  <div class="prog-line"        id="pl-4"></div>
+  <div class="prog-dot"         id="pd-5"></div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       STEP 1 — STOP and name what's happening
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="step active" id="step-1">
+    <div class="step-label">Step 1 of 5</div>
+    <h1 class="step-heading">Something's pulling you toward food. Let's just pause for a moment.</h1>
+    <div class="intro-card">
+      Take one slow breath. Then tell us what's happening right now — just what's on the surface.
+      <small>Choose up to 3 — or just tap Next if nothing fits.</small>
+    </div>
+
+    <div class="tags-wrap" id="tags-wrap">
+      <button class="tag-btn" onclick="toggleTag(this,'thinking-food')">Thinking about food</button>
+      <button class="tag-btn" onclick="toggleTag(this,'urge-urgent')">Urge feels urgent</button>
+      <button class="tag-btn" onclick="toggleTag(this,'just-stressed')">Just finished something stressful</button>
+      <button class="tag-btn" onclick="toggleTag(this,'feel-numb')">Feel kind of numb</button>
+      <button class="tag-btn" onclick="toggleTag(this,'dont-know-why')">Don't know why</button>
+      <button class="tag-btn" onclick="toggleTag(this,'restless')">Restless or can't settle</button>
+      <button class="tag-btn" onclick="toggleTag(this,'something-happened')">Something happened</button>
+      <button class="tag-btn" onclick="toggleTag(this,'just-bored')">Just bored</button>
+    </div>
+
+    <button class="primary-btn" onclick="goTo(2)">Next →</button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       STEP 2 — Body map
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="step" id="step-2">
+    <div class="step-label">Step 2 of 5</div>
+    <h1 class="step-heading">Where in your body are you feeling the pull right now?</h1>
+    <div class="intro-card">
+      This is the most important question. Hunger and emotion feel different in the body — locating the feeling helps tell them apart. Tap the region that feels most activated.
+    </div>
+
+    <div class="body-map-wrap">
+      <div class="body-svg-outer">
+        <svg viewBox="0 0 100 265" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- ── DECORATIVE BODY SHAPES ── -->
+          <!-- Head -->
+          <ellipse cx="50" cy="20" rx="18" ry="19" fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+          <!-- Neck -->
+          <rect x="44" y="37" width="12" height="12" rx="3.5" fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+          <!-- Left arm -->
+          <path d="M22,52 C14,63 9,95 10,128 C11,144 16,150 22,148 C28,146 29,137 29,123 C29,99 33,74 38,58"
+                fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+          <!-- Right arm -->
+          <path d="M78,52 C86,63 91,95 90,128 C89,144 84,150 78,148 C72,146 71,137 71,123 C71,99 67,74 62,58"
+                fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+          <!-- Torso -->
+          <path d="M22,50 C19,72 17,112 18,148 C19,163 26,170 50,170 C74,170 81,163 82,148 C83,112 81,72 78,50 C68,45 32,45 22,50Z"
+                fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+          <!-- Left leg -->
+          <path d="M26,168 C24,188 21,216 20,242 C19,254 26,256 36,255 C42,254 44,249 44,242 C44,220 44,195 44,170"
+                fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+          <!-- Right leg -->
+          <path d="M74,168 C76,188 79,216 80,242 C81,254 74,256 64,255 C58,254 56,249 56,242 C56,220 56,195 56,170"
+                fill="#ede9e4" stroke="#cdc1b8" stroke-width="1.1"/>
+
+          <!-- ── CLICKABLE REGION OVERLAYS ── -->
+          <!-- Head / mind -->
+          <ellipse class="body-region" data-region="head"
+                   cx="50" cy="20" rx="20" ry="21"/>
+          <!-- Throat / neck -->
+          <rect class="body-region" data-region="throat"
+                x="42" y="36" width="16" height="14" rx="4"/>
+          <!-- Chest -->
+          <rect class="body-region" data-region="chest"
+                x="22" y="50" width="56" height="60" rx="2"/>
+          <!-- Stomach / gut -->
+          <rect class="body-region" data-region="stomach"
+                x="23" y="110" width="54" height="58" rx="2"/>
+
+          <!-- ── REGION LABELS (pointer-events:none so clicks pass through) ── -->
+          <text class="region-label" x="50" y="20" text-anchor="middle"
+                dominant-baseline="middle" font-size="7" pointer-events="none">Head</text>
+          <text class="region-label" x="50" y="43" text-anchor="middle"
+                dominant-baseline="middle" font-size="5.5" pointer-events="none">Throat</text>
+          <text class="region-label" x="50" y="80" text-anchor="middle"
+                dominant-baseline="middle" font-size="7" pointer-events="none">Chest</text>
+          <text class="region-label" x="50" y="139" text-anchor="middle"
+                dominant-baseline="middle" font-size="7" pointer-events="none">Stomach</text>
+
+        </svg>
+      </div>
+
+      <!-- Extra options below SVG -->
+      <div class="body-extra-btns">
+        <button class="body-extra-btn" id="btn-whole"
+                onclick="selectRegion('whole')">🌊 Whole body / everywhere</button>
+        <button class="body-extra-btn" id="btn-none"
+                onclick="selectRegion('none')">I can't locate it</button>
+      </div>
+    </div>
+
+    <div class="body-interp" id="body-interp"></div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(1)">← Back</button>
+      <button class="primary-btn" id="btn-step2-next" disabled onclick="goTo(3)">Next →</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       STEP 3 — Physical hunger check
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="step" id="step-3">
+    <div class="step-label">Step 3 of 5</div>
+    <h1 class="step-heading">Let's check the physical hunger signals.</h1>
+
+    <!-- Q1 -->
+    <div class="q-block">
+      <div class="q-label">When did you last eat?</div>
+      <div class="pill-row">
+        <button class="pill-btn" onclick="selectPill(this,'q1','under1')">Less than 1 hour ago</button>
+        <button class="pill-btn" onclick="selectPill(this,'q1','1to3')">1–3 hours ago</button>
+        <button class="pill-btn" onclick="selectPill(this,'q1','3to5')">3–5 hours ago</button>
+        <button class="pill-btn" onclick="selectPill(this,'q1','over5')">5+ hours ago</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-block">
+      <div class="q-label">How would you rate the physical intensity of this feeling right now?</div>
+      <div class="slider-value-display" id="slider-display">Move the slider</div>
+      <input type="range" class="hunger-slider" id="intensity-slider"
+             min="1" max="10" value="5" oninput="onSlider(this)">
+      <div class="slider-labels">
+        <span class="slider-label-text">1 = barely noticeable</span>
+        <span class="slider-label-text">10 = urgent / painful</span>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-block">
+      <div class="q-label">If you drank a full glass of water and waited 5 minutes, do you think this feeling would change?</div>
+      <div class="pill-row">
+        <button class="pill-btn" onclick="selectPill(this,'q3','yes')">Probably yes</button>
+        <button class="pill-btn" onclick="selectPill(this,'q3','no')">Probably not</button>
+        <button class="pill-btn" onclick="selectPill(this,'q3','unsure')">Not sure</button>
+      </div>
+    </div>
+
+    <div class="signal-card" id="signal-card"></div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(2)">← Back</button>
+      <button class="primary-btn" onclick="goTo(4)">Next →</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       STEP 4 — Emotion check
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="step" id="step-4">
+    <div class="step-label">Step 4 of 5</div>
+    <h1 class="step-heading">What might be going on emotionally?</h1>
+    <div class="intro-card">
+      You don't have to choose just one. Often it's several at once — or none at all. There are no wrong answers here.
+    </div>
+
+    <div class="emotion-grid" id="emotion-grid">
+      <!-- Anxiety cluster -->
+      <button class="emotion-tile" onclick="toggleEmotion(this,'anxious','anxiety')">Anxious</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'overwhelmed','anxiety')">Overwhelmed</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'stressed','anxiety')">Stressed</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'wound-up','anxiety')">Wound up</button>
+      <div class="emotion-spacer"></div>
+      <!-- Loneliness cluster -->
+      <button class="emotion-tile" onclick="toggleEmotion(this,'lonely','loneliness')">Lonely</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'disconnected','loneliness')">Disconnected</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'invisible','loneliness')">Invisible</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'craving-closeness','loneliness')">Craving closeness</button>
+      <div class="emotion-spacer"></div>
+      <!-- Sadness cluster -->
+      <button class="emotion-tile" onclick="toggleEmotion(this,'sad','sadness')">Sad</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'flat','sadness')">Flat</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'numb-s','sadness')">Numb</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'grieving','sadness')">Grieving</button>
+      <div class="emotion-spacer"></div>
+      <!-- Boredom cluster -->
+      <button class="emotion-tile" onclick="toggleEmotion(this,'bored','boredom')">Bored</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'restless-e','boredom')">Restless</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'understimulated','boredom')">Understimulated</button>
+      <div class="emotion-spacer"></div>
+      <!-- Fatigue cluster -->
+      <button class="emotion-tile" onclick="toggleEmotion(this,'tired','fatigue')">Tired</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'depleted','fatigue')">Depleted</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'running-on-empty','fatigue')">Running on empty</button>
+      <div class="emotion-spacer"></div>
+      <!-- Anger cluster -->
+      <button class="emotion-tile" onclick="toggleEmotion(this,'angry','anger')">Angry</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'frustrated','anger')">Frustrated</button>
+      <button class="emotion-tile" onclick="toggleEmotion(this,'resentful','anger')">Resentful</button>
+      <div class="emotion-spacer"></div>
+      <!-- Neutral options -->
+      <button class="emotion-tile neutral-tile" onclick="toggleEmotion(this,'none-of-these','neutral')">None of these</button>
+      <button class="emotion-tile neutral-tile" onclick="toggleEmotion(this,'dont-know-e','neutral')">I genuinely don't know</button>
+    </div>
+
+    <div class="emotion-reflection" id="emotion-reflection"></div>
+
+    <div class="safety-banner" id="safety-banner">
+      💛 &nbsp;If things feel really hard right now, you don't have to work through this alone. Talking to someone can help.
+    </div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(3)">← Back</button>
+      <button class="primary-btn" onclick="buildOutput(); goTo(5)">Next →</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       STEP 5 — Output
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="step" id="step-5">
+    <div class="step-label">Step 5 of 5</div>
+    <h1 class="step-heading">Here's what we found.</h1>
+
+    <!-- Part A: Signal summary -->
+    <div class="out-section">
+      <div class="out-section-label">A — Signal summary</div>
+      <div class="summary-card">
+        <div class="summary-row">
+          <span class="s-key">Body location</span>
+          <span class="s-val" id="out-location">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="s-key">Physical hunger level</span>
+          <span class="s-val" id="out-hunger">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="s-key">Emotions present</span>
+          <span class="s-val" id="out-emotions">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Part B: Interpretation -->
+    <div class="out-section">
+      <div class="out-section-label">B — What this might mean</div>
+      <div id="outcome-wrap"></div>
+    </div>
+
+    <!-- Part C: What might help -->
+    <div class="out-section">
+      <div class="out-section-label">C — What might help right now</div>
+      <div class="action-cards" id="action-cards"></div>
+    </div>
+
+    <button class="restart-btn" onclick="restart()">↩ Start again</button>
+  </div>
+
+</div><!-- end .container -->
+
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────────
+const S = {
+  tags: [],          // string keys
+  region: null,      // 'head'|'throat'|'chest'|'stomach'|'whole'|'none'
+  q1: null,          // 'under1'|'1to3'|'3to5'|'over5'
+  intensity: null,   // 1–10 integer | null
+  q3: null,          // 'yes'|'no'|'unsure'
+  emotions: [],      // [{ key, cluster }]
+};
+
+// ── NAVIGATION ──────────────────────────────────────────────────────────────
+function goTo(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  for (let i = 1; i <= 5; i++) {
+    const dot  = document.getElementById('pd-' + i);
+    const line = document.getElementById('pl-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n) {
+      dot.classList.add('done');
+      if (line) line.classList.add('done');
+    } else {
+      if (line) line.classList.remove('done');
+      if (i === n) dot.classList.add('active');
+    }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── STEP 1 — Tags ────────────────────────────────────────────────────────────
+function toggleTag(btn, key) {
+  const sel = btn.classList.contains('selected');
+  if (sel) {
+    btn.classList.remove('selected');
+    S.tags = S.tags.filter(k => k !== key);
+  } else {
+    if (S.tags.length >= 3) return;
+    btn.classList.add('selected');
+    S.tags.push(key);
+  }
+  const allTags = document.querySelectorAll('.tag-btn');
+  allTags.forEach(b => {
+    if (S.tags.length >= 3 && !b.classList.contains('selected')) {
+      b.classList.add('maxed');
+    } else {
+      b.classList.remove('maxed');
+    }
+  });
+}
+
+// ── STEP 2 — Body map ────────────────────────────────────────────────────────
+const INTERP = {
+  head:    'Head sensations — like mental preoccupation or a "food noise" feeling — can be hunger, but are often emotional or habitual.',
+  throat:  'Chest and throat sensations are more often linked to anxiety, emotion, or stress.',
+  chest:   'Chest and throat sensations are more often linked to anxiety, emotion, or stress.',
+  stomach: 'Stomach and gut sensations are the strongest indicator of physical hunger.',
+  whole:   'A whole-body pull often signals fatigue, overwhelm, or a need for comfort — all of which are real and valid.',
+  none:    'That\'s okay and very common. Difficulty locating feelings in the body is itself useful information.',
+};
+
+// Wire SVG click targets
+document.querySelectorAll('.body-region').forEach(el => {
+  el.addEventListener('click', () => selectRegion(el.dataset.region));
+});
+
+function selectRegion(region) {
+  S.region = region;
+  // Clear all selections
+  document.querySelectorAll('.body-region').forEach(r => r.classList.remove('selected'));
+  document.querySelectorAll('.body-extra-btn').forEach(b => b.classList.remove('selected'));
+  // Apply selection
+  if (region === 'whole') {
+    document.getElementById('btn-whole').classList.add('selected');
+  } else if (region === 'none') {
+    document.getElementById('btn-none').classList.add('selected');
+  } else {
+    const el = document.querySelector(`.body-region[data-region="${region}"]`);
+    if (el) el.classList.add('selected');
+  }
+  // Show interpretation
+  const interp = document.getElementById('body-interp');
+  interp.textContent = INTERP[region] || '';
+  interp.classList.add('visible');
+  document.getElementById('btn-step2-next').disabled = false;
+}
+
+// ── STEP 3 — Hunger check ────────────────────────────────────────────────────
+function selectPill(btn, group, val) {
+  btn.closest('.pill-row').querySelectorAll('.pill-btn')
+     .forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if (group === 'q1') S.q1 = val;
+  else                S.q3 = val;
+  updateSignalCard();
+}
+
+function onSlider(slider) {
+  S.intensity = parseInt(slider.value);
+  const disp = document.getElementById('slider-display');
+  disp.textContent = S.intensity;
+  disp.classList.remove('unset');
+  updateSignalCard();
+}
+
+function updateSignalCard() {
+  const card = document.getElementById('signal-card');
+  if (!S.q1 || !S.intensity || !S.q3) { card.classList.remove('visible'); return; }
+
+  const longAgo   = S.q1 === '3to5' || S.q1 === 'over5';
+  const recentAgo = S.q1 === 'under1';
+  const highInt   = S.intensity >= 7;
+  const lowInt    = S.intensity <= 3;
+  const wouldnt   = S.q3 === 'no';
+  const would     = S.q3 === 'yes';
+
+  let cls, msg;
+  if (longAgo && highInt && wouldnt) {
+    cls = 'green';  msg = 'Strong physical hunger signals present.';
+  } else if (recentAgo && lowInt && would) {
+    cls = 'amber';  msg = 'Physical hunger is less likely right now.';
+  } else {
+    cls = 'neutral'; msg = 'Mixed signals — this might be both physical and emotional hunger, which is very common.';
+  }
+  card.className = 'signal-card visible ' + cls;
+  card.textContent = msg;
+}
+
+// ── STEP 4 — Emotions ─────────────────────────────────────────────────────────
+const EMOTION_REFLECTIONS = {
+  anxiety:    'Anxiety often mimics hunger — the body mobilises energy in anticipation of threat.',
+  loneliness: 'Food is one of the earliest sources of comfort and connection. This makes complete sense.',
+  sadness:    'Eating for comfort when sad is a deeply human response, not a failure.',
+  boredom:    'Boredom hunger is real — it\'s often a signal that something is missing, not that you\'re weak.',
+  fatigue:    'Tiredness and hunger use overlapping signals. Your body may genuinely need rest, food, or both.',
+  anger:      'Anger that gets turned inward often shows up as urges — eating can feel like the only release available.',
+};
+
+function toggleEmotion(btn, key, cluster) {
+  const sel = btn.classList.contains('selected');
+  if (sel) {
+    btn.classList.remove('selected');
+    S.emotions = S.emotions.filter(e => e.key !== key);
+  } else {
+    if (cluster === 'neutral') {
+      // Selecting neutral clears everything else
+      document.querySelectorAll('.emotion-tile').forEach(b => b.classList.remove('selected'));
+      S.emotions = [];
+    } else {
+      // Selecting a real emotion clears any neutral tile
+      S.emotions = S.emotions.filter(e => e.cluster !== 'neutral');
+      document.querySelectorAll('.emotion-tile.neutral-tile').forEach(b => b.classList.remove('selected'));
+    }
+    btn.classList.add('selected');
+    S.emotions.push({ key, cluster });
+  }
+  updateEmotionReflection();
+  updateSafetyBanner();
+}
+
+function updateEmotionReflection() {
+  const clusters = [...new Set(S.emotions.map(e => e.cluster).filter(c => c !== 'neutral'))];
+  const ref = document.getElementById('emotion-reflection');
+  if (clusters.length === 0) { ref.classList.remove('visible'); return; }
+  const priority = ['anxiety','loneliness','sadness','boredom','fatigue','anger'];
+  const top = priority.find(c => clusters.includes(c));
+  if (top) {
+    ref.textContent = EMOTION_REFLECTIONS[top];
+    ref.classList.add('visible');
+  }
+}
+
+function updateSafetyBanner() {
+  const banner = document.getElementById('safety-banner');
+  const hadEvent = S.tags.includes('something-happened');
+  const hasSadOrAngry = S.emotions.some(e => e.cluster === 'sadness' || e.cluster === 'anger');
+  if (hadEvent && hasSadOrAngry) banner.classList.add('visible');
+  else banner.classList.remove('visible');
+}
+
+// ── STEP 5 — Build output ──────────────────────────────────────────────────────
+function buildOutput() {
+  const { region, q1, intensity, q3, emotions } = S;
+
+  // Location label
+  const LOC_LABELS = {
+    head:    'Head / mind',
+    throat:  'Throat / neck',
+    chest:   'Chest',
+    stomach: 'Stomach / gut',
+    whole:   'Whole body / everywhere',
+    none:    'Unable to locate',
+  };
+  document.getElementById('out-location').textContent = LOC_LABELS[region] || '—';
+
+  // Hunger level
+  const longAgo   = q1 === '3to5' || q1 === 'over5';
+  const recentAgo = q1 === 'under1';
+  const highInt   = intensity && intensity >= 7;
+  const lowInt    = intensity && intensity <= 3;
+  const wouldnt   = q3 === 'no';
+  const would     = q3 === 'yes';
+  let hungerLevel;
+  if (!q1 && !intensity && !q3) hungerLevel = 'unknown';
+  else if (longAgo && highInt && wouldnt) hungerLevel = 'strong';
+  else if (recentAgo && lowInt && would) hungerLevel = 'low';
+  else hungerLevel = 'mixed';
+
+  const HUNGER_LABELS = { strong: 'Strong', mixed: 'Mixed', low: 'Low / unlikely', unknown: 'Not assessed' };
+  document.getElementById('out-hunger').textContent = HUNGER_LABELS[hungerLevel];
+
+  // Emotions
+  const realEmotions = emotions.filter(e => e.cluster !== 'neutral');
+  const emotionClusters = [...new Set(realEmotions.map(e => e.cluster))];
+  const emotionNames = realEmotions.map(e => e.key.replace(/-[se]$/, '').replace(/-/g, ' '));
+  document.getElementById('out-emotions').textContent =
+    emotionNames.length > 0 ? emotionNames.join(', ') : 'None identified';
+
+  // Determine outcome
+  const gutLocation   = region === 'stomach';
+  const headNeckChest = ['head','throat','chest'].includes(region);
+  const hasEmotions   = emotionClusters.length > 0;
+
+  let outcome;
+  if (gutLocation && hungerLevel === 'strong' && !hasEmotions) {
+    outcome = 'physical';
+  } else if (headNeckChest && (hungerLevel === 'low') && hasEmotions) {
+    outcome = 'emotional';
+  } else {
+    outcome = 'both';
+  }
+
+  // Outcome card
+  const OUTCOMES = {
+    physical: {
+      cls: 'physical',
+      label: 'Mostly physical hunger',
+      text: 'Your body is likely asking for food. This is physical hunger. Eating is the right response — try to eat something that genuinely sounds satisfying, not just "safe".',
+    },
+    emotional: {
+      cls: 'emotional',
+      label: 'Mostly emotional',
+      text: 'This looks more like an emotional need than physical hunger right now. That doesn\'t mean you can\'t or shouldn\'t eat — but there might also be something else that would help.',
+    },
+    both: {
+      cls: 'both',
+      label: 'Both — and that\'s very common',
+      text: 'It looks like you might have both physical hunger and an emotional need happening at the same time. Both are real and valid. You can eat and also tend to the emotion.',
+    },
+  };
+  const oc = OUTCOMES[outcome];
+  document.getElementById('outcome-wrap').innerHTML =
+    `<div class="outcome-card ${oc.cls}">
+      <div class="outcome-label">${oc.label}</div>
+      <div class="outcome-text">${oc.text}</div>
+    </div>`;
+
+  // Action cards
+  let cards = [];
+
+  if (outcome === 'physical') {
+    cards = [
+      { icon: '🍽️', text: 'Eat something that genuinely sounds good to you.' },
+      { icon: '✨', text: 'Notice what texture, temperature, or flavour sounds satisfying — let that guide you.' },
+      { icon: '🌿', text: 'Eat slowly and check in halfway through. You can always have more.' },
+    ];
+  } else {
+    // Tailor to emotion clusters (max 3 cards)
+    const ORDER = ['loneliness','anxiety','sadness','boredom','fatigue','anger'];
+    const topClusters = ORDER.filter(c => emotionClusters.includes(c));
+    const CLUSTER_CARDS = {
+      loneliness: [
+        { icon: '💬', text: 'Reach out to someone, even briefly — a text or voice note counts.' },
+        { icon: '🎵', text: 'Put on something that feels like company: a podcast, a show you love, music.' },
+      ],
+      anxiety: [
+        { icon: '🫁', text: 'Box breathing: in for 4, hold for 4, out for 4, hold for 4. Repeat 3 times.' },
+        { icon: '📝', text: 'Name what you\'re actually afraid of. Write it down — it gets smaller on paper.' },
+      ],
+      sadness: [
+        { icon: '💙', text: 'Let yourself feel it for a few minutes without trying to fix it.' },
+        { icon: '🛁', text: 'Something physically comforting: warmth, softness, a blanket, a hot drink.' },
+      ],
+      boredom: [
+        { icon: '🚪', text: 'Change your physical environment, even slightly — move rooms, go outside briefly.' },
+        { icon: '🤲', text: 'Do something absorbing with your hands — low-stakes and tactile.' },
+      ],
+      fatigue: [
+        { icon: '😴', text: 'Rest without guilt. Your body asking for a pause is not weakness.' },
+        { icon: '🌙', text: 'If rest isn\'t possible right now, even 5 minutes lying down helps.' },
+      ],
+      anger: [
+        { icon: '🏃', text: 'Move your body with some intensity — it burns through anger physically.' },
+        { icon: '✍️', text: 'Write it out, uncensored. You don\'t have to send it or show anyone.' },
+      ],
+    };
+    for (const cluster of topClusters) {
+      if (cards.length >= 3) break;
+      const opts = CLUSTER_CARDS[cluster] || [];
+      cards.push(opts[0]);
+      if (cards.length < 3 && opts[1]) cards.push(opts[1]);
+    }
+    if (cards.length === 0) {
+      cards.push({ icon: '🌱', text: 'Give yourself a moment. You don\'t have to fix anything right now.' });
+    }
+    cards = cards.slice(0, 3);
+  }
+
+  // Always-valid anchor card
+  cards.push({
+    icon: '🫂',
+    text: 'Eat anyway — sometimes food is the right answer even when it\'s emotional. You don\'t have to earn it.',
+    anchor: true,
+  });
+
+  document.getElementById('action-cards').innerHTML = cards.map(c =>
+    `<div class="action-card ${c.anchor ? 'anchor-card' : ''}">
+      <span class="action-card-icon">${c.icon}</span>
+      <span>${c.text}</span>
+    </div>`
+  ).join('');
+}
+
+// ── RESET ──────────────────────────────────────────────────────────────────────
+function restart() {
+  S.tags = []; S.region = null; S.q1 = null; S.intensity = null; S.q3 = null; S.emotions = [];
+
+  document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('selected','maxed'));
+  document.querySelectorAll('.body-region').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.body-extra-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('body-interp').classList.remove('visible');
+  document.getElementById('btn-step2-next').disabled = true;
+  document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('selected'));
+  const sliderDisp = document.getElementById('slider-display');
+  sliderDisp.textContent = 'Move the slider';
+  sliderDisp.classList.add('unset');
+  document.getElementById('intensity-slider').value = 5;
+  document.getElementById('signal-card').classList.remove('visible');
+  document.querySelectorAll('.emotion-tile').forEach(b => b.classList.remove('selected'));
+  document.getElementById('emotion-reflection').classList.remove('visible');
+  document.getElementById('safety-banner').classList.remove('visible');
+
+  goTo(1);
+}
+
+// Init slider display state
+document.getElementById('slider-display').classList.add('unset');
+</script>
+
+</body>
+</html>

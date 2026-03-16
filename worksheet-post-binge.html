@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moving Forward After a Binge — Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── TOKENS ── */
+:root {
+  --sage:        #4a7c59;
+  --sage-mid:    #7aad8a;
+  --sage-light:  #eef5f0;
+  --mauve:       #8a5a78;
+  --text:        #2d2926;
+  --text-mid:    #5a5250;
+  --text-light:  #8c8280;
+  --border:      #cdd8d0;
+  --bg:          #fafcfb;
+  --radius:      10px;
+}
+
+/* ── BASE ── */
+html { font-size: 15px; }
+body {
+  font-family: 'DM Sans', Georgia, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  padding: 0;
+}
+
+/* ── SCREEN NAV ── */
+.ws-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; background: white;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.ws-nav a {
+  font-size: 0.82rem; color: var(--text-light); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+  transition: all 0.2s;
+}
+.ws-nav a:hover { color: var(--sage); border-color: var(--sage); }
+.download-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; background: var(--sage); color: white;
+  border: none; border-radius: 20px; padding: 8px 18px;
+  transition: opacity 0.2s; white-space: nowrap;
+}
+.download-btn:hover { opacity: 0.85; }
+.clear-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; background: white; color: var(--text-light);
+  border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.clear-btn:hover { color: var(--sage); border-color: var(--sage); }
+
+/* ── WORKSHEET WRAPPER ── */
+.worksheet {
+  max-width: 760px; margin: 32px auto 64px;
+  padding: 48px 56px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* ── HEADER ── */
+.ws-header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 2px solid var(--sage-light); }
+.ws-header h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.55rem; color: var(--sage); line-height: 1.3; margin-bottom: 8px;
+}
+.ws-header .subtitle {
+  font-size: 0.82rem; color: var(--text-light); font-style: italic; margin-bottom: 20px;
+}
+.ws-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+.ws-meta-field { display: flex; align-items: baseline; gap: 8px; font-size: 0.85rem; color: var(--text-mid); }
+.ws-meta-field input {
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent; font-family: inherit; font-size: 0.85rem;
+  color: var(--text); outline: none; width: 140px;
+}
+.ws-meta-field input:focus { border-bottom-color: var(--sage); }
+
+/* ── SECTIONS ── */
+.ws-section { margin-bottom: 44px; }
+.ws-section-heading {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.1rem; color: var(--sage);
+  border-left: 3px solid var(--sage);
+  padding-left: 12px; margin-bottom: 10px;
+}
+.ws-section-number {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--sage-mid); margin-bottom: 4px;
+}
+.ws-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
+
+/* ── REMINDER BLOCKS ── */
+.reminder-block {
+  background: var(--sage-light);
+  border-left: 4px solid var(--sage-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 22px;
+  margin-bottom: 10px;
+  font-size: 0.92rem; line-height: 1.75; color: var(--text);
+}
+.reminder-block strong {
+  display: block; font-size: 0.9rem; color: var(--sage); margin-bottom: 4px;
+}
+.reminder-block p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.checklist li input[type="checkbox"] {
+  flex-shrink: 0; margin-top: 3px;
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--sage-mid);
+  border-radius: 2px; cursor: pointer;
+  background: white; position: relative;
+}
+.checklist li input[type="checkbox"]:checked {
+  background: var(--sage);
+  border-color: var(--sage);
+}
+.checklist li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute; top: 2px; left: 4px;
+  width: 5px; height: 8px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── WRITE AREA ── */
+.write-prompt {
+  font-size: 0.88rem; color: var(--text-mid); font-style: italic;
+  margin-bottom: 8px; margin-top: 18px;
+}
+.write-area {
+  width: 100%; min-height: 90px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg);
+  font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.9rem;
+  color: var(--text); line-height: 1.7;
+  padding: 10px 12px; resize: vertical; outline: none;
+}
+.write-area:focus { border-color: var(--sage); }
+.write-area.tall { min-height: 130px; }
+.write-area.short { min-height: 60px; }
+
+/* inline text input */
+.inline-input {
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent; font-family: inherit; font-size: 0.9rem;
+  color: var(--text); outline: none; flex: 1; min-width: 160px;
+}
+.inline-input:focus { border-bottom-color: var(--sage); }
+
+/* ── PROGRESS NOTICE ── */
+.progress-notice {
+  background: #fffbeb; border: 1px solid #f6d860;
+  border-radius: 8px; padding: 11px 16px;
+  font-size: 0.82rem; color: #6b5800; line-height: 1.55;
+  margin: 16px 24px;
+}
+.progress-notice strong { color: #4a3d00; }
+
+/* ── MEAL PROMISE ── */
+.meal-row {
+  display: flex; flex-direction: column; gap: 14px; margin-top: 4px;
+}
+.meal-item { display: flex; flex-direction: column; gap: 4px; }
+.meal-label { font-size: 0.88rem; color: var(--text-mid); font-style: italic; }
+
+/* ── CARE GRID ── */
+.care-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 18px;
+}
+.care-grid li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.9rem; line-height: 1.4;
+  list-style: none;
+}
+.care-grid li input[type="checkbox"] {
+  flex-shrink: 0;
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--sage-mid);
+  border-radius: 2px; cursor: pointer;
+  background: white; position: relative;
+}
+.care-grid li input[type="checkbox"]:checked {
+  background: var(--sage); border-color: var(--sage);
+}
+.care-grid li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute; top: 2px; left: 4px;
+  width: 5px; height: 8px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── DAY PLAN ── */
+.plan-rows { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+.plan-item { display: flex; align-items: flex-start; gap: 10px; }
+.plan-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1rem; color: var(--sage); flex-shrink: 0; padding-top: 8px;
+}
+
+/* ── COMPASSION QUOTES ── */
+.compassion-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.compassion-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.9rem; line-height: 1.5; font-style: italic; color: var(--text-mid);
+}
+.compassion-list li input[type="checkbox"] {
+  flex-shrink: 0; margin-top: 3px;
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--sage-mid);
+  border-radius: 2px; cursor: pointer;
+  background: white; position: relative;
+}
+.compassion-list li input[type="checkbox"]:checked {
+  background: var(--sage); border-color: var(--sage);
+}
+.compassion-list li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute; top: 2px; left: 4px;
+  width: 5px; height: 8px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── CLOSING NOTE ── */
+.closing-box {
+  background: var(--sage-light);
+  border: 1.5px solid #b8d4c0;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  text-align: center;
+  margin-top: 40px;
+}
+.closing-box .closing-main {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.05rem; color: var(--sage); margin-bottom: 6px;
+}
+.closing-box p { font-size: 0.85rem; color: var(--text-mid); }
+
+/* ── DIVIDER ── */
+.ws-divider { border: none; border-top: 1.5px solid var(--sage-light); margin: 36px 0; }
+
+/* ── PRINT ── */
+@media print {
+  .ws-nav, .progress-notice { display: none !important; }
+  .worksheet { margin: 0; border: none; border-radius: 0; padding: 32px 40px; }
+  body { background: white; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Screen nav -->
+<div class="ws-nav">
+  <a href="after-binge.html">← Back</a>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="clear-btn" onclick="clearWorksheet()">↺ Clear all</button>
+    <button class="download-btn" onclick="downloadWorksheet()">⬇ Download</button>
+  </div>
+</div>
+
+<div class="progress-notice">
+  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will. <strong>If you'd rather not risk it, consider writing your answers on paper instead.</strong>
+</div>
+
+<div class="worksheet">
+
+  <!-- Header -->
+  <div class="ws-header">
+    <h1>Moving Forward After a Binge</h1>
+    <p class="subtitle">A guided recovery worksheet &nbsp;·&nbsp; Take it one section at a time</p>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 1</div>
+    <div class="ws-section-heading">A few things worth remembering</div>
+    <p class="ws-intro">Read these slowly. You don't have to believe them fully right now — just let them in.</p>
+
+    <div class="reminder-block">
+      <strong>Restriction will make it worse</strong>
+      <p>Skipping your next meal to "compensate" is one of the most reliable ways to trigger another binge. Eating normally after a binge is not giving in — it's recovery.</p>
+    </div>
+    <div class="reminder-block">
+      <strong>The shame spiral is not helpful</strong>
+      <p>Self-criticism feels like it should do something — but it doesn't prevent future episodes. In fact, shame tends to increase them. Kindness is not a reward you have to earn.</p>
+    </div>
+    <div class="reminder-block">
+      <strong>This doesn't undo your progress</strong>
+      <p>One episode doesn't erase the work you've done. Recovery is not a straight line and a binge is not a relapse into square one. You are still moving forward.</p>
+    </div>
+    <div class="reminder-block">
+      <strong>Your body is not damaged</strong>
+      <p>Binges are uncomfortable, but your body is resilient. Drink some water, rest if you need to, and trust that it will settle.</p>
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 2 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 2</div>
+    <div class="ws-section-heading">My next meal promise</div>
+    <p class="ws-intro">Decide now what your next meal will be. It doesn't have to be perfect — it just has to be regular and kind.</p>
+
+    <div class="meal-row">
+      <div class="meal-item">
+        <div class="meal-label">My next meal will be…</div>
+        <textarea class="write-area short" placeholder="Write here…"></textarea>
+      </div>
+      <div class="meal-item">
+        <div class="meal-label">I will eat it at approximately…</div>
+        <textarea class="write-area short" placeholder="Write here…"></textarea>
+      </div>
+      <div class="meal-item">
+        <div class="meal-label">One thing I'll do to make it feel okay (e.g. eat sitting down, put it on a plate)…</div>
+        <textarea class="write-area short" placeholder="Write here…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 3 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 3</div>
+    <div class="ws-section-heading">One self-care choice</div>
+    <p class="ws-intro">Choose one thing for yourself in the next hour that isn't food-related. <em>Tick the one you'll do.</em></p>
+
+    <ul class="care-grid">
+      <li><input type="checkbox"><span>Have a shower or bath</span></li>
+      <li><input type="checkbox"><span>Make a warm drink and sit quietly</span></li>
+      <li><input type="checkbox"><span>Go outside for 10 minutes</span></li>
+      <li><input type="checkbox"><span>Put on something comfortable</span></li>
+      <li><input type="checkbox"><span>Call or message someone you trust</span></li>
+      <li><input type="checkbox"><span>Listen to music or a podcast</span></li>
+      <li><input type="checkbox"><span>Lie down with a blanket</span></li>
+      <li><input type="checkbox"><span>Do something with your hands</span></li>
+    </ul>
+
+    <p class="write-prompt">My self-care choice right now is… and I'll do it…</p>
+    <textarea class="write-area short" placeholder="Write here…"></textarea>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 4 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 4</div>
+    <div class="ws-section-heading">Plan for the rest of the day</div>
+    <p class="ws-intro">Just enough to give the day a gentle shape. Rest and watching something count.</p>
+
+    <div class="plan-rows">
+      <div class="plan-item">
+        <div class="plan-num">1.</div>
+        <textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea>
+      </div>
+      <div class="plan-item">
+        <div class="plan-num">2.</div>
+        <textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea>
+      </div>
+      <div class="plan-item">
+        <div class="plan-num">3.</div>
+        <textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 5 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 5</div>
+    <div class="ws-section-heading">Say something kind to yourself</div>
+    <p class="ws-intro">You don't have to believe it fully. Tick the one that fits, or write your own below.</p>
+
+    <ul class="compassion-list">
+      <li><input type="checkbox"><span>"This was hard, and I got through it. I'm still here."</span></li>
+      <li><input type="checkbox"><span>"I am allowed to struggle. Struggling doesn't make me broken."</span></li>
+      <li><input type="checkbox"><span>"I would never speak to someone I love the way I'm speaking to myself right now."</span></li>
+      <li><input type="checkbox"><span>"I don't have to be okay yet. I just have to take the next small step."</span></li>
+      <li><input type="checkbox"><span>"Bingeing is something that happened to me — it is not who I am."</span></li>
+      <li><input type="checkbox"><span>"I am learning. Every time I come back to myself, that is recovery."</span></li>
+    </ul>
+
+    <p class="write-prompt">Right now, I want to say to myself…</p>
+    <textarea class="write-area" placeholder="Write here…"></textarea>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 6 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 6</div>
+    <div class="ws-section-heading">Reflections (when you're ready)</div>
+    <p class="ws-intro">Come back to these when you feel calm — not as analysis, but as understanding. There's no rush.</p>
+
+    <p class="write-prompt">What was I feeling before the binge started?</p>
+    <textarea class="write-area tall" placeholder="Write here…"></textarea>
+
+    <p class="write-prompt">Was there a specific trigger, or did it build gradually?</p>
+    <textarea class="write-area tall" placeholder="Write here…"></textarea>
+
+    <p class="write-prompt">What was I hoping the binge would give me or take away?</p>
+    <textarea class="write-area tall" placeholder="Write here…"></textarea>
+
+    <p class="write-prompt">Is there anything I might do differently next time I feel that way?</p>
+    <textarea class="write-area tall" placeholder="Write here…"></textarea>
+
+    <p class="write-prompt">What do I want to remember from this moment — right now, after?</p>
+    <textarea class="write-area" placeholder="Write here…"></textarea>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing-box">
+    <div class="closing-main">You came back to yourself. That's everything.</div>
+    <p>Recovery isn't about never bingeing again. It's about what you do next — and you're already doing it.</p>
+  </div>
+
+</div><!-- end worksheet -->
+
+<script>
+// ── Download as PDF ───────────────────────────────────────────────────────
+async function downloadWorksheet() {
+  const btn = document.querySelector('.download-btn');
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+
+  const nav = document.querySelector('.ws-nav');
+  const notice = document.querySelector('.progress-notice');
+  const ws = document.querySelector('.worksheet');
+  nav.style.display = 'none';
+  if (notice) notice.style.display = 'none';
+  ws.style.marginTop = '0';
+  ws.style.borderRadius = '0';
+
+  try {
+    await html2pdf().set({
+      margin: [12, 14, 12, 14],
+      filename: 'Post-Binge-Recovery.pdf',
+      image: { type: 'jpeg', quality: 0.97 },
+      html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css'] }
+    }).from(ws).save();
+  } finally {
+    nav.style.display = '';
+    if (notice) notice.style.display = '';
+    ws.style.marginTop = '';
+    ws.style.borderRadius = '';
+    btn.textContent = '⬇ Download';
+    btn.disabled = false;
+  }
+}
+
+// ── Clear all ─────────────────────────────────────────────────────────────
+function clearWorksheet() {
+  if (!confirm('Clear all answers and start fresh?')) return;
+  try { localStorage.removeItem('ws-post-binge-v1'); } catch(e) {}
+  document.querySelectorAll('textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Auto-save ────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'ws-post-binge-v1';
+
+function saveProgress() {
+  const data = {};
+  document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => { data['cb' + i] = el.checked; });
+  document.querySelectorAll('textarea').forEach((el, i) => { data['ta' + i] = el.value; });
+  document.querySelectorAll('input[type="text"]').forEach((el, i) => { data['tx' + i] = el.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => { if (data['cb' + i] !== undefined) el.checked = data['cb' + i]; });
+    document.querySelectorAll('textarea').forEach((el, i) => { if (data['ta' + i]) el.value = data['ta' + i]; });
+    document.querySelectorAll('input[type="text"]').forEach((el, i) => { if (data['tx' + i]) el.value = data['tx' + i]; });
+  } catch(e) {}
+}
+
+document.addEventListener('input', saveProgress);
+document.addEventListener('change', saveProgress);
+loadProgress();
+</script>
+
+</body>
+</html>

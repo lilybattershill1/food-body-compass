@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feeling Guilty for What or How I Just Ate — Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── TOKENS ── */
+:root {
+  --mauve:       #8a5a78;
+  --mauve-mid:   #b07898;
+  --mauve-light: #f7eff4;
+  --sage:        #4a7c59;
+  --sage-light:  #eef5f0;
+  --text:        #2d2926;
+  --text-mid:    #5a5250;
+  --text-light:  #8c8280;
+  --border:      #d8cdd4;
+  --bg:          #fdfaf8;
+  --radius:      10px;
+}
+
+/* ── BASE ── */
+html { font-size: 15px; }
+body {
+  font-family: 'DM Sans', Georgia, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  padding: 0;
+}
+
+/* ── SCREEN NAV ── */
+.ws-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; background: white;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.ws-nav a {
+  font-size: 0.82rem; color: var(--text-light); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+  transition: all 0.2s;
+}
+.ws-nav a:hover { color: var(--mauve); border-color: var(--mauve); }
+.download-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; background: var(--mauve); color: white;
+  border: none; border-radius: 20px; padding: 8px 18px;
+  transition: opacity 0.2s; white-space: nowrap;
+}
+.download-btn:hover { opacity: 0.85; }
+.clear-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; background: white; color: var(--text-light);
+  border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.clear-btn:hover { color: var(--mauve); border-color: var(--mauve); }
+
+/* ── WORKSHEET WRAPPER ── */
+.worksheet {
+  max-width: 760px; margin: 32px auto 64px;
+  padding: 48px 56px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* ── HEADER ── */
+.ws-header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 2px solid var(--mauve-light); }
+.ws-header h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.55rem; color: var(--mauve); line-height: 1.3; margin-bottom: 8px;
+}
+.ws-header .subtitle {
+  font-size: 0.82rem; color: var(--text-light); font-style: italic; margin-bottom: 20px;
+}
+.ws-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+.ws-meta-field { display: flex; align-items: baseline; gap: 8px; font-size: 0.85rem; color: var(--text-mid); }
+.ws-meta-field input {
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent; font-family: inherit; font-size: 0.85rem;
+  color: var(--text); outline: none; width: 140px;
+}
+.ws-meta-field input:focus { border-bottom-color: var(--mauve); }
+
+/* ── SECTIONS ── */
+.ws-section { margin-bottom: 44px; }
+.ws-section-heading {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.1rem; color: var(--mauve);
+  border-left: 3px solid var(--mauve);
+  padding-left: 12px; margin-bottom: 10px;
+}
+.ws-section-number {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--mauve-mid); margin-bottom: 4px;
+}
+.ws-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.9rem; line-height: 1.5;
+}
+.checklist li input[type="checkbox"] {
+  flex-shrink: 0; margin-top: 3px;
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--mauve-mid);
+  border-radius: 2px; cursor: pointer;
+  background: white; position: relative;
+}
+.checklist li input[type="checkbox"]:checked {
+  background: var(--mauve);
+  border-color: var(--mauve);
+}
+.checklist li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute; top: 2px; left: 4px;
+  width: 5px; height: 8px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+/* inline text input (e.g. "My own rule: ___") */
+.inline-input {
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent; font-family: inherit; font-size: 0.9rem;
+  color: var(--text); outline: none; flex: 1; min-width: 160px;
+}
+.inline-input:focus { border-bottom-color: var(--mauve); }
+
+/* ── READING PASSAGE ── */
+.reading-block {
+  background: var(--mauve-light);
+  border-left: 4px solid var(--mauve-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 22px;
+  font-size: 0.92rem; line-height: 1.75; color: var(--text);
+}
+.reading-block p + p { margin-top: 10px; }
+
+/* ── WRITE AREA ── */
+.write-prompt {
+  font-size: 0.88rem; color: var(--text-mid); font-style: italic;
+  margin-bottom: 8px; margin-top: 18px;
+}
+.write-area {
+  width: 100%; min-height: 110px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg);
+  font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.9rem;
+  color: var(--text); line-height: 1.7;
+  padding: 10px 12px; resize: vertical; outline: none;
+}
+.write-area:focus { border-color: var(--mauve); }
+
+/* ── PROGRESS NOTICE ── */
+.progress-notice {
+  background: #fffbeb; border: 1px solid #f6d860;
+  border-radius: 8px; padding: 11px 16px;
+  font-size: 0.82rem; color: #6b5800; line-height: 1.55;
+  margin: 16px 24px;
+}
+.progress-notice strong { color: #4a3d00; }
+
+
+/* ── SUBSECTION ── */
+.ws-sub-heading {
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--text-mid);
+  margin-bottom: 10px; margin-top: 22px;
+}
+
+/* ── CBT DIAGRAM ── */
+.cbt-wrapper { margin: 20px 0 10px; }
+.cbt-row {
+  display: flex; align-items: stretch; gap: 0; margin-bottom: 0;
+  position: relative;
+}
+.cbt-box {
+  flex: 1;
+  border: 2px solid var(--mauve-mid);
+  border-radius: var(--radius);
+  padding: 14px 12px; text-align: center;
+  background: white;
+}
+.cbt-box-label {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 0.92rem; color: var(--mauve); margin-bottom: 5px;
+}
+.cbt-box-example {
+  font-size: 0.78rem; color: var(--text-mid); font-style: italic; line-height: 1.45;
+}
+.cbt-arrow {
+  display: flex; align-items: center; padding: 0 6px;
+  font-size: 1.4rem; color: var(--mauve-mid); flex-shrink: 0;
+}
+.cbt-cycle {
+  display: flex; align-items: center; justify-content: flex-start;
+  gap: 6px; margin-top: 4px;
+  padding: 8px 12px;
+  background: var(--mauve-light); border-radius: var(--radius);
+  border: 1px dashed var(--mauve-mid);
+}
+.cbt-cycle-text {
+  font-size: 0.8rem; color: var(--mauve); font-style: italic;
+}
+.cbt-note {
+  font-size: 0.8rem; color: var(--text-light); font-style: italic;
+  margin-top: 8px; text-align: center;
+}
+
+/* ── COMMITMENT BOX ── */
+.commitment-options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.commitment-options li {
+  display: flex; align-items: center; gap: 10px; font-size: 0.9rem;
+}
+.commitment-options li input[type="checkbox"] {
+  flex-shrink: 0;
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px;
+  border: 1.5px solid var(--mauve-mid);
+  border-radius: 2px; cursor: pointer;
+  background: white; position: relative;
+}
+.commitment-options li input[type="checkbox"]:checked {
+  background: var(--mauve); border-color: var(--mauve);
+}
+.commitment-options li input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute; top: 2px; left: 4px;
+  width: 5px; height: 8px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── CLOSING NOTE ── */
+.closing-box {
+  background: var(--sage-light);
+  border: 1.5px solid #b8d4c0;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  text-align: center;
+  margin-top: 40px;
+}
+.closing-box .closing-main {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.05rem; color: var(--sage); margin-bottom: 6px;
+}
+.closing-box p { font-size: 0.85rem; color: var(--text-mid); }
+
+/* ── DIVIDER ── */
+.ws-divider { border: none; border-top: 1.5px solid var(--mauve-light); margin: 36px 0; }
+
+
+</style>
+</head>
+<body>
+
+<!-- Screen nav -->
+<div class="ws-nav">
+  <a href="feeling-guilty.html">← Back</a>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="clear-btn" onclick="clearWorksheet()">↺ Clear all</button>
+    <button class="download-btn" onclick="downloadWorksheet()">⬇ Download</button>
+  </div>
+</div>
+
+<div class="progress-notice">
+  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will. <strong>If you'd rather not risk it, consider writing your answers on paper instead.</strong>
+</div>
+
+<div class="worksheet">
+
+  <!-- Header -->
+  <div class="ws-header">
+    <h1>Feeling Guilty for What or How I Just Ate</h1>
+    <p class="subtitle">A guided self-reflection tool &nbsp;·&nbsp; Based on CBT and intuitive eating principles</p>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 1</div>
+    <div class="ws-section-heading">What's driving the guilt?</div>
+    <p class="ws-intro">You're feeling guilty about something you ate, or the way you ate. Which of these beliefs is driving the guilt? <em>Circle or tick up to 2.</em></p>
+    <ul class="checklist">
+      <li><input type="checkbox"><span>I ate more than I think I should have</span></li>
+      <li><input type="checkbox"><span>I ate something I usually try to avoid</span></li>
+      <li><input type="checkbox"><span>I ate something I believe is unhealthy</span></li>
+      <li><input type="checkbox"><span>I ate past fullness</span></li>
+      <li><input type="checkbox"><span>I ate emotionally or without really thinking</span></li>
+      <li><input type="checkbox"><span>I felt out of control</span></li>
+      <li><input type="checkbox"><span>I ate "too soon" after my last meal</span></li>
+      <li><input type="checkbox"><span>I just feel… wrong or gross after eating</span></li>
+      <li><input type="checkbox"><span>I'm not sure — it's just guilt</span></li>
+    </ul>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 2 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 2</div>
+    <div class="ws-section-heading">Where guilt comes from</div>
+    <div class="reading-block">
+      <p>Guilt is a learned response. It often comes from rules — spoken or unspoken — that you've internalised about how you're "supposed" to eat. These rules didn't come from your body. They came from culture, diet messages, other people's fears, and a world that treats food as a moral issue.</p>
+      <p>But here's the truth: eating is not a moral issue. You didn't do anything wrong. You don't have to earn food, or punish yourself for needing it. Your worth is not determined by what you ate today.</p>
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 3 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 3</div>
+    <div class="ws-section-heading">What rule got triggered?</div>
+    <p class="ws-intro">Guilt often shows up when you break an internalised food rule — one you never actually chose. Can you spot the rule underneath this guilt? <em>Circle or tick up to 2.</em></p>
+    <ul class="checklist">
+      <li><input type="checkbox"><span>I shouldn't eat unless I'm really hungry</span></li>
+      <li><input type="checkbox"><span>I shouldn't eat certain foods</span></li>
+      <li><input type="checkbox"><span>I should always stop at the "right" fullness</span></li>
+      <li><input type="checkbox"><span>I shouldn't eat when I'm emotional</span></li>
+      <li><input type="checkbox"><span>I should make up for eating by eating less later</span></li>
+      <li><input type="checkbox"><span>I should only eat at certain times</span></li>
+      <li><input type="checkbox"><span>I should only eat "healthy" food</span></li>
+      <li><input type="checkbox"><span>I should always be in control around food</span></li>
+      <li><input type="checkbox"><span>I don't deserve food unless I've been "good"</span></li>
+      <li><input type="checkbox"><span>My own rule: <input class="inline-input" type="text" placeholder="&nbsp;"></span></li>
+    </ul>
+
+    <p class="write-prompt">Where did this rule come from? A parent, a diet, the culture around you?</p>
+    <textarea class="write-area" placeholder="Write here…"></textarea>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 4 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 4</div>
+    <div class="ws-section-heading">Rewriting the rule</div>
+
+    <!-- 4a -->
+    <div class="ws-sub-heading">4a — When you try to follow this rule, what happens? <em style="font-weight:400;text-transform:none;letter-spacing:0">(Select up to 2)</em></div>
+    <ul class="checklist">
+      <li><input type="checkbox"><span>I feel tense, anxious or obsessed with food</span></li>
+      <li><input type="checkbox"><span>I swing between restriction and overeating</span></li>
+      <li><input type="checkbox"><span>I feel like I'm always failing</span></li>
+      <li><input type="checkbox"><span>I disconnect from what I actually want or need</span></li>
+      <li><input type="checkbox"><span>I feel ashamed or not good enough</span></li>
+    </ul>
+
+    <!-- 4b -->
+    <div class="ws-sub-heading" style="margin-top:24px">4b — How is this rule getting in the way? <em style="font-weight:400;text-transform:none;letter-spacing:0">(Select up to 2)</em></div>
+    <ul class="checklist">
+      <li><input type="checkbox"><span>It makes me ignore hunger or cravings</span></li>
+      <li><input type="checkbox"><span>It ramps up guilt or shame even when I'm doing my best</span></li>
+      <li><input type="checkbox"><span>It pushes me into all-or-nothing cycles (restrict → overeat)</span></li>
+      <li><input type="checkbox"><span>It disconnects me from satisfaction and what I actually need</span></li>
+      <li><input type="checkbox"><span>It turns food into a stress or moral issue</span></li>
+    </ul>
+
+    <!-- 4c CBT diagram -->
+    <div class="ws-sub-heading" style="margin-top:24px">4c — The cycle your rule creates</div>
+    <div class="cbt-wrapper">
+      <div class="cbt-row">
+        <div class="cbt-box">
+          <div class="cbt-box-label">Rigid belief</div>
+          <div class="cbt-box-example">"I must follow this rule"</div>
+        </div>
+        <div class="cbt-arrow">→</div>
+        <div class="cbt-box">
+          <div class="cbt-box-label">Feelings</div>
+          <div class="cbt-box-example">guilt, shame, anxiety</div>
+        </div>
+        <div class="cbt-arrow">→</div>
+        <div class="cbt-box">
+          <div class="cbt-box-label">Behaviours</div>
+          <div class="cbt-box-example">restrict, overeat, disconnect</div>
+        </div>
+        <div class="cbt-arrow">→</div>
+        <div class="cbt-box" style="border-style:dashed; opacity:0.7;">
+          <div class="cbt-box-label">Back to start</div>
+          <div class="cbt-box-example">rule feels confirmed, cycle repeats</div>
+        </div>
+      </div>
+      <p class="cbt-note">Notice how the rule creates the very suffering it claims to prevent.</p>
+    </div>
+
+    <!-- 4d -->
+    <div class="ws-sub-heading" style="margin-top:24px">4d — What's a kinder, more flexible approach? <em style="font-weight:400;text-transform:none;letter-spacing:0">(Choose up to 2, or write your own)</em></div>
+    <ul class="checklist">
+      <li><input type="checkbox"><span>I eat when I'm hungry, and sometimes for other reasons — and that's okay</span></li>
+      <li><input type="checkbox"><span>I don't have to optimise every choice I make about food or my body</span></li>
+      <li><input type="checkbox"><span>My body's needs change day to day, and that's completely normal</span></li>
+      <li><input type="checkbox"><span>I can trust my body's signals, even when they don't match what I think they "should" be</span></li>
+      <li><input type="checkbox"><span>My own: <input class="inline-input" type="text" placeholder="&nbsp;"></span></li>
+    </ul>
+
+    <!-- 4e -->
+    <div class="ws-sub-heading" style="margin-top:28px">4e — Commitment</div>
+    <p class="ws-intro" style="margin-bottom:10px">Would you like to try living by this kinder rule — even just for today?</p>
+    <ul class="commitment-options">
+      <li><input type="checkbox"><span>Yes — I'll try</span></li>
+      <li><input type="checkbox"><span>I'm open to it</span></li>
+      <li><input type="checkbox"><span>Not yet — and that's okay</span></li>
+    </ul>
+
+  </div>
+
+  <!-- Closing -->
+  <div class="closing-box">
+    <div class="closing-main">You're not failing. You're unlearning.</div>
+    <p>This exercise helps you move from rigid rules to flexible care. That's how trust with food is rebuilt — slowly, gently, one moment at a time.</p>
+  </div>
+
+</div><!-- end worksheet -->
+
+<script>
+// ── Download as PDF ───────────────────────────────────────────────────────
+async function downloadWorksheet() {
+  const btn = document.querySelector('.download-btn');
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+
+  const nav = document.querySelector('.ws-nav');
+  const notice = document.querySelector('.progress-notice');
+  const ws = document.querySelector('.worksheet');
+  nav.style.display = 'none';
+  if (notice) notice.style.display = 'none';
+  ws.style.marginTop = '0';
+  ws.style.borderRadius = '0';
+
+  try {
+    await html2pdf().set({
+      margin: [12, 14, 12, 14],
+      filename: 'Feeling-Guilty-Worksheet.pdf',
+      image: { type: 'jpeg', quality: 0.97 },
+      html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css'] }
+    }).from(ws).save();
+  } finally {
+    nav.style.display = '';
+    if (notice) notice.style.display = '';
+    ws.style.marginTop = '';
+    ws.style.borderRadius = '';
+    btn.textContent = '⬇ Download';
+    btn.disabled = false;
+  }
+}
+
+// ── Clear all ─────────────────────────────────────────────────────────────
+function clearWorksheet() {
+  if (!confirm('Clear all answers and start fresh?')) return;
+  try { localStorage.removeItem('ws-food-guilt-v1'); } catch(e) {}
+  document.querySelectorAll('textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Auto-save ────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'ws-food-guilt-v1';
+
+function saveProgress() {
+  const data = {};
+  document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => { data['cb' + i] = el.checked; });
+  document.querySelectorAll('textarea').forEach((el, i) => { data['ta' + i] = el.value; });
+  document.querySelectorAll('input[type="text"]').forEach((el, i) => { data['tx' + i] = el.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    document.querySelectorAll('input[type="checkbox"]').forEach((el, i) => { if (data['cb' + i] !== undefined) el.checked = data['cb' + i]; });
+    document.querySelectorAll('textarea').forEach((el, i) => { if (data['ta' + i]) el.value = data['ta' + i]; });
+    document.querySelectorAll('input[type="text"]').forEach((el, i) => { if (data['tx' + i]) el.value = data['tx' + i]; });
+  } catch(e) {}
+}
+
+document.addEventListener('input', saveProgress);
+document.addEventListener('change', saveProgress);
+loadProgress();
+</script>
+
+</body>
+</html>

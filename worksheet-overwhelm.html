@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overwhelm Sorter — Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── TOKENS ── */
+:root {
+  --teal:        #2a7f7f;
+  --teal-mid:    #5aafaf;
+  --teal-light:  #e6f4f4;
+  --sage:        #4a7c59;
+  --sage-light:  #eef5f0;
+  --text:        #2d2926;
+  --text-mid:    #5a5250;
+  --text-light:  #8c8280;
+  --border:      #ccd8d8;
+  --bg:          #f7fbfb;
+  --radius:      10px;
+}
+
+/* ── BASE ── */
+html { font-size: 15px; }
+body {
+  font-family: 'DM Sans', Georgia, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  padding: 0;
+}
+
+/* ── SCREEN NAV ── */
+.ws-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; background: white;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.ws-nav a {
+  font-size: 0.82rem; color: var(--text-light); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+  transition: all 0.2s;
+}
+.ws-nav a:hover { color: var(--teal); border-color: var(--teal); }
+.download-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; background: var(--teal); color: white;
+  border: none; border-radius: 20px; padding: 8px 18px;
+  transition: opacity 0.2s; white-space: nowrap;
+}
+.download-btn:hover { opacity: 0.85; }
+.clear-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; background: white; color: var(--text-light);
+  border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.clear-btn:hover { color: var(--teal); border-color: var(--teal); }
+
+/* ── WORKSHEET WRAPPER ── */
+.worksheet {
+  max-width: 760px; margin: 32px auto 64px;
+  padding: 48px 56px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* ── HEADER ── */
+.ws-header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 2px solid var(--teal-light); }
+.ws-header h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.55rem; color: var(--teal); line-height: 1.3; margin-bottom: 8px;
+}
+.ws-header .subtitle {
+  font-size: 0.82rem; color: var(--text-light); font-style: italic; margin-bottom: 20px;
+}
+.ws-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+.ws-meta-field { display: flex; align-items: baseline; gap: 8px; font-size: 0.85rem; color: var(--text-mid); }
+.ws-meta-field input {
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent; font-family: inherit; font-size: 0.85rem;
+  color: var(--text); outline: none; width: 140px;
+}
+.ws-meta-field input:focus { border-bottom-color: var(--teal); }
+
+/* ── SECTIONS ── */
+.ws-section { margin-bottom: 44px; }
+.ws-section-heading {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.1rem; color: var(--teal);
+  border-left: 3px solid var(--teal);
+  padding-left: 12px; margin-bottom: 10px;
+}
+.ws-section-number {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--teal-mid); margin-bottom: 4px;
+}
+.ws-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
+
+/* ── GROUNDING BLOCK ── */
+.grounding-block {
+  background: var(--teal-light);
+  border-left: 4px solid var(--teal-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 22px;
+  font-size: 0.92rem; line-height: 1.75; color: var(--text);
+  margin-bottom: 14px;
+}
+.grounding-block p + p { margin-top: 10px; }
+
+/* ── WRITE AREA ── */
+.write-prompt {
+  font-size: 0.88rem; color: var(--text-mid); font-style: italic;
+  margin-bottom: 8px; margin-top: 18px;
+}
+.write-area {
+  width: 100%; min-height: 70px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg);
+  font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.9rem;
+  color: var(--text); line-height: 1.7;
+  padding: 10px 12px; resize: vertical; outline: none;
+}
+.write-area:focus { border-color: var(--teal); }
+.write-area.short { min-height: 48px; }
+.write-area.tall  { min-height: 100px; }
+
+/* ── SCALE ROW ── */
+.scale-row {
+  display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; align-items: center;
+}
+.scale-num {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1.5px solid var(--teal-mid);
+  background: white;
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
+  color: var(--text-mid); cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+}
+.scale-num:hover { border-color: var(--teal); color: var(--teal); }
+.scale-num.selected { background: var(--teal); border-color: var(--teal); color: white; }
+
+/* ── VALUES GRID ── */
+.values-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px; margin-top: 14px; margin-bottom: 16px;
+}
+@media (max-width: 540px) { .values-grid { grid-template-columns: repeat(3, 1fr); } }
+.value-btn {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 10px 6px; text-align: center;
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+  color: var(--text-mid); cursor: pointer; background: white;
+  transition: all 0.15s; line-height: 1.2;
+}
+.value-btn:hover { border-color: var(--teal); color: var(--teal); }
+.value-btn.selected { background: var(--teal); border-color: var(--teal); color: white; font-weight: 600; }
+
+/* ── INLINE WRITE LINE ── */
+.inline-write {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 0.9rem; color: var(--text-mid); margin-top: 8px;
+}
+.inline-input {
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent; font-family: inherit; font-size: 0.9rem;
+  color: var(--text); outline: none; flex: 1; min-width: 160px;
+}
+.inline-input:focus { border-bottom-color: var(--teal); }
+
+/* ── DUMP LIST ── */
+.dump-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.dump-item { display: flex; align-items: flex-start; gap: 10px; }
+.dump-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1rem; color: var(--teal); flex-shrink: 0; padding-top: 7px; min-width: 22px;
+}
+.add-dump-btn {
+  margin-top: 10px; display: block; width: 100%;
+  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--teal);
+  background: none; border: 1px dashed var(--teal-mid);
+  border-radius: 6px; padding: 7px 14px; cursor: pointer; transition: all 0.15s;
+}
+.add-dump-btn:hover { background: var(--teal-light); }
+
+.value-custom-wrap {
+  border: 1.5px dashed var(--border); border-radius: 8px;
+  padding: 7px 6px; background: white; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.value-custom-wrap.selected { border-color: var(--teal); background: var(--teal-light); }
+.value-custom-input {
+  border: none; background: transparent; font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; color: var(--text-mid); outline: none; width: 100%;
+  text-align: center; cursor: text;
+}
+.value-custom-input::placeholder { color: var(--text-light); font-style: italic; }
+
+/* ── DECISION GUIDE ── */
+.decision-guide {
+  background: var(--teal-light);
+  border-left: 4px solid var(--teal-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 16px 20px; margin-bottom: 18px;
+  font-size: 0.88rem; line-height: 1.75; color: var(--text);
+}
+.decision-guide .guide-row { margin-bottom: 4px; }
+.decision-guide .guide-row strong { color: var(--teal); }
+
+/* ── SORT GRID ── */
+.sort-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 22px;
+}
+.sort-box { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.sort-box-label {
+  background: var(--teal-light); padding: 8px 14px;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 0.95rem; color: var(--teal);
+  border-bottom: 1px solid var(--border);
+}
+.sort-area {
+  width: 100%; min-height: 110px;
+  border: none; background: white;
+  font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.88rem;
+  color: var(--text); line-height: 1.7;
+  padding: 10px 12px; resize: vertical; outline: none;
+}
+.sort-area:focus { background: #fafffe; }
+
+/* ── REFLECTION PROMPT ── */
+.reflection-prompt {
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.7;
+  margin-bottom: 10px;
+}
+.reflection-prompt em { color: var(--teal); font-style: normal; font-weight: 600; }
+
+/* ── SENTENCE STARTER ── */
+.sentence-block { margin-bottom: 22px; }
+.sentence-stem {
+  font-size: 0.92rem; color: var(--text-mid);
+  font-style: italic; margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 3px solid var(--teal-light);
+  line-height: 1.5;
+}
+
+/* ── SETTLE OPTIONS ── */
+.settle-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; margin-bottom: 16px; }
+.settle-btn {
+  border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 8px 18px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  color: var(--text-mid); cursor: pointer; background: white; transition: all 0.15s;
+}
+.settle-btn:hover { border-color: var(--teal); color: var(--teal); }
+.settle-btn.selected { background: var(--teal); border-color: var(--teal); color: white; font-weight: 600; }
+
+/* ── CLOSING BOX ── */
+.closing-box {
+  background: var(--sage-light);
+  border: 1.5px solid #b8d4c0;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  text-align: center;
+  margin-top: 40px;
+}
+.closing-box .closing-main {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.05rem; color: var(--sage); margin-bottom: 6px;
+}
+.closing-box p { font-size: 0.85rem; color: var(--text-mid); }
+
+/* ── DIVIDER ── */
+.ws-divider { border: none; border-top: 1.5px solid var(--teal-light); margin: 36px 0; }
+
+/* ── PROGRESS NOTICE ── */
+.progress-notice {
+  background: #fffbeb; border: 1px solid #f6d860;
+  border-radius: 8px; padding: 11px 16px;
+  font-size: 0.82rem; color: #6b5800; line-height: 1.55;
+  margin: 16px 24px;
+}
+.progress-notice strong { color: #4a3d00; }
+
+</style>
+</head>
+<body>
+
+<!-- Screen nav -->
+<div class="ws-nav">
+  <a href="index.html">← Back</a>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="clear-btn" onclick="clearWorksheet()">↺ Clear all</button>
+    <button class="download-btn" onclick="downloadWorksheet()">⬇ Download</button>
+  </div>
+</div>
+
+<div class="progress-notice">
+  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will. <strong>If you'd rather not risk it, consider writing your answers on paper instead.</strong>
+</div>
+
+<div class="worksheet">
+
+  <!-- Header -->
+  <div class="ws-header">
+    <h1>Overwhelm Sorter</h1>
+    <p class="subtitle">A guided self-reflection tool &nbsp;·&nbsp; Based on ACT and values-based prioritisation</p>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 1</div>
+    <div class="ws-section-heading">Body check-in</div>
+    <p class="ws-intro">Before anything else, just notice.</p>
+
+    <p class="write-prompt">Where are you feeling the overwhelm in your body right now?</p>
+    <textarea class="write-area" placeholder="Write here…"></textarea>
+
+    <p class="write-prompt" style="margin-top:20px">On a scale of 1–10, how overwhelmed do you feel right now? Circle one:</p>
+    <div class="scale-row">
+      <button class="scale-num" onclick="selectScale(this)">1</button>
+      <button class="scale-num" onclick="selectScale(this)">2</button>
+      <button class="scale-num" onclick="selectScale(this)">3</button>
+      <button class="scale-num" onclick="selectScale(this)">4</button>
+      <button class="scale-num" onclick="selectScale(this)">5</button>
+      <button class="scale-num" onclick="selectScale(this)">6</button>
+      <button class="scale-num" onclick="selectScale(this)">7</button>
+      <button class="scale-num" onclick="selectScale(this)">8</button>
+      <button class="scale-num" onclick="selectScale(this)">9</button>
+      <button class="scale-num" onclick="selectScale(this)">10</button>
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 2 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 2</div>
+    <div class="ws-section-heading">Grounding</div>
+
+    <div class="grounding-block">
+      <p>You don't have to solve everything right now. Overwhelm is not a sign that you're failing — it's a sign that you care. Let's just take one step at a time.</p>
+    </div>
+    <p class="ws-intro">Take three slow breaths before moving on.</p>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 3 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 3</div>
+    <div class="ws-section-heading">What matters most</div>
+    <p class="ws-intro">These aren't the things you think you should prioritise. They're what you want your energy to be in service of today. <em>Circle up to 3.</em></p>
+
+    <div class="values-grid">
+      <button class="value-btn" onclick="toggleValue(this)">Health</button>
+      <button class="value-btn" onclick="toggleValue(this)">Connection</button>
+      <button class="value-btn" onclick="toggleValue(this)">Rest</button>
+      <button class="value-btn" onclick="toggleValue(this)">Impact</button>
+      <button class="value-btn" onclick="toggleValue(this)">Safety</button>
+      <button class="value-btn" onclick="toggleValue(this)">Growth</button>
+      <button class="value-btn" onclick="toggleValue(this)">Creativity</button>
+      <button class="value-btn" onclick="toggleValue(this)">Peace</button>
+      <button class="value-btn" onclick="toggleValue(this)">Joy</button>
+      <button class="value-btn" onclick="toggleValue(this)">Freedom</button>
+      <button class="value-btn" onclick="toggleValue(this)">Purpose</button>
+      <button class="value-btn" onclick="toggleValue(this)">Love</button>
+      <div class="value-custom-wrap" id="custom-value-wrap">
+        <input class="value-custom-input" id="custom-value-input" type="text" placeholder="My own…" oninput="handleCustomValue()" maxlength="20">
+      </div>
+    </div>
+
+    <div class="inline-write">
+      <span>My values today:</span>
+      <input class="inline-input" type="text" id="values-write" placeholder="&nbsp;">
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 4 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 4</div>
+    <div class="ws-section-heading">The dump</div>
+    <p class="ws-intro">Don't filter. Just get it all out — tasks, worries, feelings, expectations, things people want from you, things you're telling yourself you should do.</p>
+
+    <div class="dump-list">
+      <div class="dump-item"><span class="dump-num">1.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">2.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">3.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">4.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">5.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">6.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">7.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+      <div class="dump-item"><span class="dump-num">8.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
+    </div>
+    <button class="add-dump-btn" onclick="addDumpItem()">+ Add more</button>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 5 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 5</div>
+    <div class="ws-section-heading">Sort each item</div>
+    <p class="ws-intro">Go back to your list and write the number of each item in one of the boxes below. Use this to decide:</p>
+
+    <div class="decision-guide">
+      <div class="guide-row"><strong>Must Do</strong> — only you can do it, and it genuinely matters this week</div>
+      <div class="guide-row"><strong>Can Wait</strong> — real and valid, but not this week</div>
+      <div class="guide-row"><strong>Delegate</strong> — someone else could handle this</div>
+      <div class="guide-row"><strong>Let Go</strong> — driven by fear, guilt, or "should" — not by your values</div>
+    </div>
+
+    <div class="sort-grid">
+      <div class="sort-box">
+        <div class="sort-box-label">Must Do</div>
+        <textarea class="sort-area" placeholder="Item numbers…"></textarea>
+      </div>
+      <div class="sort-box">
+        <div class="sort-box-label">Can Wait</div>
+        <textarea class="sort-area" placeholder="Item numbers…"></textarea>
+      </div>
+      <div class="sort-box">
+        <div class="sort-box-label">Delegate</div>
+        <textarea class="sort-area" placeholder="Item numbers…"></textarea>
+      </div>
+      <div class="sort-box">
+        <div class="sort-box-label">Let Go</div>
+        <textarea class="sort-area" placeholder="Item numbers…"></textarea>
+      </div>
+    </div>
+
+    <p class="reflection-prompt">Look at your 'Let Go' box. Which of these are driven by fear or "should" rather than your values of <em id="values-echo">________________</em>? What would it mean to actually let them go?</p>
+    <textarea class="write-area tall" placeholder="Write here…"></textarea>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 6 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 6</div>
+    <div class="ws-section-heading">Your plan</div>
+    <p class="ws-intro">Based on your sorting, complete these sentences:</p>
+
+    <div class="sentence-block">
+      <p class="sentence-stem">The one or two things I will actually focus on today are…</p>
+      <textarea class="write-area" placeholder="Write here…"></textarea>
+    </div>
+
+    <div class="sentence-block">
+      <p class="sentence-stem">I give myself permission to not do…</p>
+      <textarea class="write-area" placeholder="Write here…"></textarea>
+    </div>
+
+    <div class="sentence-block">
+      <p class="sentence-stem">I will ask for help with…</p>
+      <textarea class="write-area" placeholder="Write here…"></textarea>
+    </div>
+
+    <div class="sentence-block">
+      <p class="sentence-stem">Something I can do less perfectly is…</p>
+      <textarea class="write-area" placeholder="Write here…"></textarea>
+    </div>
+
+    <div class="sentence-block">
+      <p class="sentence-stem">One small way I will care for myself today is…</p>
+      <textarea class="write-area" placeholder="Write here…"></textarea>
+    </div>
+  </div>
+
+  <hr class="ws-divider">
+
+  <!-- ── SECTION 7 ── -->
+  <div class="ws-section">
+    <div class="ws-section-number">Section 7</div>
+    <div class="ws-section-heading">Closing body check-in</div>
+
+    <p class="ws-intro">Where are you in your body now, compared to when you started? Circle one:</p>
+    <div class="settle-row">
+      <button class="settle-btn" onclick="selectSettle(this)">More settled</button>
+      <button class="settle-btn" onclick="selectSettle(this)">About the same</button>
+      <button class="settle-btn" onclick="selectSettle(this)">Still processing</button>
+    </div>
+
+    <p class="write-prompt">One thing I want to remember from this:</p>
+    <textarea class="write-area" placeholder="Write here…"></textarea>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing-box">
+    <div class="closing-main">Clarity doesn't always mean having fewer things to do.</div>
+    <p>Sometimes it just means knowing what actually matters — and giving yourself permission to let the rest wait.</p>
+  </div>
+
+</div><!-- end worksheet -->
+
+<script>
+// ── Scale ────────────────────────────────────────────────────────────────
+function selectScale(btn) {
+  document.querySelectorAll('.scale-num').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  saveProgress();
+}
+
+// ── Values ───────────────────────────────────────────────────────────────
+function countSelectedValues() {
+  const btnCount = document.querySelectorAll('.value-btn.selected').length;
+  const customVal = document.getElementById('custom-value-input').value.trim();
+  return btnCount + (customVal ? 1 : 0);
+}
+
+function toggleValue(btn) {
+  if (!btn.classList.contains('selected') && countSelectedValues() >= 3) return;
+  btn.classList.toggle('selected');
+  updateValuesEcho();
+  saveProgress();
+}
+
+function handleCustomValue() {
+  const input = document.getElementById('custom-value-input');
+  const wrap = document.getElementById('custom-value-wrap');
+  const hasText = input.value.trim().length > 0;
+  // If adding this would exceed 3 and it wasn't previously filled, block
+  if (hasText && !wrap.classList.contains('selected') && countSelectedValues() > 3) {
+    input.value = input.value.slice(0, -1);
+    return;
+  }
+  wrap.classList.toggle('selected', hasText);
+  updateValuesEcho();
+  saveProgress();
+}
+
+function updateValuesEcho() {
+  const selected = [...document.querySelectorAll('.value-btn.selected')].map(b => b.textContent);
+  const customVal = document.getElementById('custom-value-input').value.trim();
+  if (customVal) selected.push(customVal);
+  document.getElementById('values-echo').textContent = selected.length ? selected.join(', ') : '________________';
+}
+
+// ── Dump ─────────────────────────────────────────────────────────────────
+let dumpCount = 8;
+
+function addDumpItem() {
+  dumpCount++;
+  const list = document.querySelector('.dump-list');
+  const item = document.createElement('div');
+  item.className = 'dump-item';
+  item.innerHTML = `<span class="dump-num">${dumpCount}.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea>`;
+  list.appendChild(item);
+  item.querySelector('textarea').addEventListener('input', saveProgress);
+  item.querySelector('textarea').focus();
+  saveProgress();
+}
+
+// ── Settle ───────────────────────────────────────────────────────────────
+function selectSettle(btn) {
+  document.querySelectorAll('.settle-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  saveProgress();
+}
+
+// ── Download as PDF ───────────────────────────────────────────────────────
+async function downloadWorksheet() {
+  const btn = document.querySelector('.download-btn');
+  btn.textContent = 'Generating…';
+  btn.disabled = true;
+
+  const nav = document.querySelector('.ws-nav');
+  const notice = document.querySelector('.progress-notice');
+  const addBtn = document.querySelector('.add-dump-btn');
+  const ws = document.querySelector('.worksheet');
+  nav.style.display = 'none';
+  if (notice) notice.style.display = 'none';
+  if (addBtn) addBtn.style.display = 'none';
+  ws.style.marginTop = '0';
+  ws.style.borderRadius = '0';
+
+  try {
+    await html2pdf().set({
+      margin: [12, 14, 12, 14],
+      filename: 'Overwhelm-Sorter.pdf',
+      image: { type: 'jpeg', quality: 0.97 },
+      html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css'] }
+    }).from(ws).save();
+  } finally {
+    nav.style.display = '';
+    if (notice) notice.style.display = '';
+    if (addBtn) addBtn.style.display = '';
+    ws.style.marginTop = '';
+    ws.style.borderRadius = '';
+    btn.textContent = '⬇ Download';
+    btn.disabled = false;
+  }
+}
+
+// ── Clear all ─────────────────────────────────────────────────────────────
+function clearWorksheet() {
+  if (!confirm('Clear all answers and start fresh?')) return;
+  try { localStorage.removeItem('ws-overwhelm-v1'); } catch(e) {}
+  document.querySelectorAll('textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  document.querySelectorAll('.value-btn').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.scale-btn').forEach(el => el.classList.remove('selected'));
+  // Remove any extra dump rows added via + Add more, keeping only the original 8
+  const list = document.querySelector('.dump-list');
+  if (list) {
+    const items = list.querySelectorAll('.dump-item');
+    items.forEach((item, i) => { if (i >= 8) item.remove(); });
+    dumpCount = 8;
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Auto-save ────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'ws-overwhelm-v1';
+
+function saveProgress() {
+  const data = {};
+  data['dumpCount'] = dumpCount;
+  document.querySelectorAll('.scale-num').forEach((el, i) => { data['sc' + i] = el.classList.contains('selected'); });
+  document.querySelectorAll('.value-btn').forEach((el, i) => { data['vl' + i] = el.classList.contains('selected'); });
+  data['customVal'] = document.getElementById('custom-value-input').value;
+  document.querySelectorAll('.settle-btn').forEach((el, i) => { data['st' + i] = el.classList.contains('selected'); });
+  document.querySelectorAll('textarea').forEach((el, i) => { data['ta' + i] = el.value; });
+  document.querySelectorAll('input[type="text"]').forEach((el, i) => { data['tx' + i] = el.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+
+    // Restore extra dump rows before filling textarea values
+    if (data['dumpCount'] && data['dumpCount'] > 8) {
+      for (let i = 9; i <= data['dumpCount']; i++) {
+        dumpCount = i;
+        const list = document.querySelector('.dump-list');
+        const item = document.createElement('div');
+        item.className = 'dump-item';
+        item.innerHTML = `<span class="dump-num">${i}.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea>`;
+        list.appendChild(item);
+        item.querySelector('textarea').addEventListener('input', saveProgress);
+      }
+    }
+
+    document.querySelectorAll('.scale-num').forEach((el, i) => { if (data['sc' + i]) el.classList.add('selected'); });
+    document.querySelectorAll('.value-btn').forEach((el, i) => { if (data['vl' + i]) el.classList.add('selected'); });
+    if (data['customVal']) {
+      document.getElementById('custom-value-input').value = data['customVal'];
+      if (data['customVal'].trim()) document.getElementById('custom-value-wrap').classList.add('selected');
+    }
+    document.querySelectorAll('.settle-btn').forEach((el, i) => { if (data['st' + i]) el.classList.add('selected'); });
+    document.querySelectorAll('textarea').forEach((el, i) => { if (data['ta' + i]) el.value = data['ta' + i]; });
+    document.querySelectorAll('input[type="text"]').forEach((el, i) => { if (data['tx' + i]) el.value = data['tx' + i]; });
+    updateValuesEcho();
+  } catch(e) {}
+}
+
+document.addEventListener('input', saveProgress);
+document.addEventListener('change', saveProgress);
+loadProgress();
+</script>
+
+</body>
+</html>

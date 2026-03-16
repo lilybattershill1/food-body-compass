@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — Food & Body Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🧭 Food & Body Compass</a>
+  <div class="nav-tabs">
+    <a class="nav-tab active" href="resources.html">Resources</a>
+    <a class="nav-tab" href="about.html">About</a>
+  </div>
+</nav>
+
+<div class="resources-hero">
+  <h1>All resources</h1>
+  <p>Every audio track, worksheet, and guide — in one place.</p>
+</div>
+
+<div class="resources-body">
+
+  <!-- ── GUIDED AUDIO ── -->
+  <div class="resources-group">
+    <div class="resources-section-label">🎧 Guided audio</div>
+
+    <div class="audio-group-label">Body image</div>
+    <div class="audio-card" style="border-color:var(--violet)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--violet)">Body Neutrality</div>
+          <div class="a-sub">A practice for accepting your body as it is</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/body-neutrality.m4a" data-color="var(--violet)">
+        <button class="play-btn" style="background:var(--violet)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--violet)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-card" style="border-color:var(--violet)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--violet)">Body Shame</div>
+          <div class="a-sub">Working with shame around how your body feels or looks</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/body-shame.m4a" data-color="var(--violet)">
+        <button class="play-btn" style="background:var(--violet)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--violet)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-card" style="border-color:var(--violet)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--violet)">Body Appreciation Practice</div>
+          <div class="a-sub">A longer practice for finding gratitude for your body</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/body-appreciation.m4a" data-color="var(--violet)">
+        <button class="play-btn" style="background:var(--violet)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--violet)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-group-label">Urges &amp; in-the-moment</div>
+    <div class="audio-card" data-next="urge-surf-main-res" style="border-color:var(--amber)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--amber)">Urge Surfing — Part 1: Introduction</div>
+          <div class="a-sub">Sets up the urge surfing technique — start here</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/urge-surf-intro.m4a" data-color="var(--amber)">
+        <button class="play-btn" style="background:var(--amber)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--amber)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-card" id="urge-surf-main-res" style="border-color:var(--amber)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--amber)">Urge Surfing — Part 2: Main Session</div>
+          <div class="a-sub">The full urge surfing practice</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/urge-surf-main.m4a" data-color="var(--amber)">
+        <button class="play-btn" style="background:var(--amber)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--amber)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-card" style="border-color:var(--rose)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--rose)">Mindful Binge</div>
+          <div class="a-sub">For during a binge — no judgement</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/mindful-binge.m4a" data-color="var(--rose)">
+        <button class="play-btn" style="background:var(--rose)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--rose)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-group-label">After a binge</div>
+    <div class="audio-card" style="border-color:var(--sage)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--sage)">Post-Binge Self-Compassion</div>
+          <div class="a-sub">A gentle practice for the hours after</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/post-binge-self-compassion.m4a" data-color="var(--sage)">
+        <button class="play-btn" style="background:var(--sage)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--sage)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="audio-card" style="border-color:var(--sage)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--sage)">Post-Binge Recovery</div>
+          <div class="a-sub">A guided recovery session for after a binge</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/post-binge.m4a" data-color="var(--sage)">
+        <button class="play-btn" style="background:var(--sage)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--sage)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WORKSHEETS ── -->
+  <div class="resources-group">
+    <div class="resources-section-label">📝 Worksheets</div>
+    <a class="resource-card" href="worksheet-food-guilt.html">
+      <span class="resource-card-icon">💛</span>
+      <div class="resource-card-text">
+        <div class="rc-title">Feeling Guilty for What or How I Just Ate</div>
+        <div class="rc-sub">CBT & intuitive eating self-reflection · downloadable PDF</div>
+      </div>
+      <span class="r-arrow">→</span>
+    </a>
+    <a class="resource-card" href="worksheet-post-binge.html">
+      <span class="resource-card-icon">🌱</span>
+      <div class="resource-card-text">
+        <div class="rc-title">Moving Forward After a Binge</div>
+        <div class="rc-sub">Guided recovery worksheet · downloadable PDF</div>
+      </div>
+      <span class="r-arrow">→</span>
+    </a>
+    <a class="resource-card" href="worksheet-overwhelm.html">
+      <span class="resource-card-icon">🌀</span>
+      <div class="resource-card-text">
+        <div class="rc-title">Overwhelm Sorter</div>
+        <div class="rc-sub">ACT &amp; values-based prioritisation · downloadable PDF</div>
+      </div>
+      <span class="r-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ── GUIDED TOOLS ── -->
+  <div class="resources-group">
+    <div class="resources-section-label">🫥 Guided tools</div>
+    <a class="resource-card" href="i-want-to-hide.html">
+      <span class="resource-card-icon">🫥</span>
+      <div class="resource-card-text">
+        <div class="rc-title">I Want to Hide</div>
+        <div class="rc-sub">A two-step guided tool for when you want to withdraw or avoid being seen</div>
+      </div>
+      <span class="r-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ── GUIDES ── -->
+  <div class="resources-group">
+    <div class="resources-section-label">📖 Guides</div>
+    <a class="resource-card" href="support.html">
+      <span class="resource-card-icon">🆘</span>
+      <div class="resource-card-text">
+        <div class="rc-title">Helplines &amp; Crisis Support</div>
+        <div class="rc-sub">UK, US, Australia &amp; international eating disorder helplines</div>
+      </div>
+      <span class="r-arrow">→</span>
+    </a>
+  </div>
+
+</div>
+
+<footer>Food & Body Compass &nbsp;·&nbsp; A toolkit for difficult moments</footer>
+<script src="script.js"></script>
+</body>
+</html>

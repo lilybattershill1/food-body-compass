@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>After a binge — Food & Body Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🧭 Food & Body Compass</a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="resources.html">Resources</a>
+    <a class="nav-tab" href="about.html">About</a>
+  </div>
+</nav>
+
+<div class="detail-hero" style="background: var(--sage-light);">
+  <div class="detail-hero-inner">
+    <div class="detail-emoji-big">🌱</div>
+    <div>
+      <button class="back-btn" onclick="window.location.href='index.html'">← Back</button>
+      <h2 style="color:var(--sage)">After a binge — recovery</h2>
+      <p class="tagline" style="color:var(--sage)">The episode is over. What happens now matters more than what just did.</p>
+    </div>
+  </div>
+</div>
+
+<div class="detail-body">
+  <div class="whats-going-on">
+    <div class="label" style="color:var(--sage)">What's going on</div>
+    <p>The hours after a binge are when the harshest self-talk tends to arrive. This is also when the most important recovery choices happen — how you treat yourself now shapes the pattern going forward.</p>
+  </div>
+  <div class="steps-label" style="color:var(--sage)">Try this now</div>
+  <div class="step"><div class="step-num" style="background:var(--sage)">1</div><p>Avoid restriction: skipping meals after a binge often fuels the next one.<sup><a href="https://pubmed.ncbi.nlm.nih.gov/3857016/" class="cite-link" target="_blank" rel="noopener">1</a></sup></p></div>
+  <div class="step"><div class="step-num" style="background:var(--sage)">2</div><p>Be deliberate about self-compassion — speak to yourself as you would a close friend.<sup><a href="https://doi.org/10.1521/jscp.2007.26.10.1120" class="cite-link" target="_blank" rel="noopener">2</a></sup></p></div>
+  <div class="step"><div class="step-num" style="background:var(--sage)">3</div><p>Do something gentle and non-food-related to re-regulate (walk, shower, call someone).</p></div>
+  <div class="step"><div class="step-num" style="background:var(--sage)">4</div><p>Use the reflection sheet when you feel calm — not as punishment, but as understanding.</p></div>
+  <details class="footnotes-wrap">
+    <summary class="footnotes-toggle">Sources</summary>
+    <div class="footnotes">
+      <div class="footnote"><span class="footnote-num">1</span><span>Polivy & Herman (1985). Dieting and binging: a causal analysis. <em>American Psychologist, 40</em>(2), 193–201. <a href="https://pubmed.ncbi.nlm.nih.gov/3857016/" target="_blank" rel="noopener">PubMed ↗</a></span></div>
+      <div class="footnote"><span class="footnote-num">2</span><span>Adams & Leary (2007). Promoting self-compassionate attitudes toward eating among restrictive and guilty eaters. <em>Journal of Social and Clinical Psychology, 26</em>(10), 1120–1144. <a href="https://doi.org/10.1521/jscp.2007.26.10.1120" target="_blank" rel="noopener">DOI ↗</a></span></div>
+    </div>
+  </details>
+  <div class="resources-section">
+    <div class="resources-label" style="color:var(--sage)">Guided audio</div>
+    <div class="audio-card" style="border-color:var(--sage)">
+      <div class="audio-card-header">
+        <span class="audio-icon">🎧</span>
+        <div class="audio-info">
+          <div class="a-title" style="color:var(--sage)">Post-Binge Self-Compassion</div>
+          <div class="a-sub">A gentle practice for the hours after</div>
+        </div>
+      </div>
+      <div class="player" data-src="audio/post-binge-self-compassion.m4a" data-color="var(--sage)">
+        <button class="play-btn" style="background:var(--sage)" onclick="togglePlay(this)">▶</button>
+        <div class="player-track">
+          <div class="progress-bar" onclick="seekAudio(this, event)">
+            <div class="progress-fill" style="background:var(--sage)"></div>
+          </div>
+          <div class="player-times"><span class="time-current">0:00</span><span class="time-total">—</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="resources-label" style="color:var(--sage); margin-top:18px">Recovery guide</div>
+    <a class="worksheet-link" href="worksheet-post-binge.html">
+      <span style="font-size:1.2rem">🌱</span>
+      <div><div class="r-title">Moving forward after a binge</div><div class="r-sub">Guided recovery worksheet</div></div>
+      <span class="r-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<footer>Food & Body Compass &nbsp;·&nbsp; A toolkit for difficult moments</footer>
+<script src="script.js"></script>
+</body>
+</html>
