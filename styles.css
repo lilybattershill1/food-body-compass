@@ -199,7 +199,7 @@ nav {
 
 /* ── AUDIO PLAYER ── */
 .resources-section { margin-top: 26px; }
-.resources-label { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: 12px; }
+.resources-label { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 12px; letter-spacing: 0.01em; }
 
 .audio-card {
   background: white; border: 1.5px solid var(--border);
@@ -237,18 +237,53 @@ nav {
   font-size: 0.72rem; color: var(--text-light); font-variant-numeric: tabular-nums;
 }
 
+/* Content pills (audio/worksheet count bar) */
+.content-pills {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 12px 20px; background: white;
+  border-bottom: 1px solid var(--border);
+}
+.content-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--off-white); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 0.8rem; font-weight: 600;
+  text-decoration: none; color: var(--text-mid);
+  transition: all 0.15s;
+}
+.content-pill:hover {
+  background: var(--pill-color, var(--sage));
+  border-color: var(--pill-color, var(--sage));
+  color: white;
+}
+.content-pill .pill-count {
+  background: var(--pill-color, var(--sage));
+  color: white; border-radius: 10px;
+  padding: 1px 7px; font-size: 0.72rem; font-weight: 700;
+}
+.content-pill:hover .pill-count {
+  background: rgba(255,255,255,0.3);
+}
+
 /* Worksheet link */
 .worksheet-link {
-  display: flex; align-items: center; gap: 12px;
-  background: white; border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); padding: 14px 18px;
+  display: flex; align-items: center; gap: 14px;
+  background: #fafafa;
+  border: 1.5px solid var(--border);
+  border-left: 4px solid var(--ws-color, var(--sage));
+  border-radius: var(--radius-sm); padding: 16px 18px;
   margin-bottom: 10px; text-decoration: none; color: var(--text);
   transition: all 0.2s;
 }
-.worksheet-link:hover { transform: translateX(3px); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
-.worksheet-link .r-title { font-weight: 600; font-size: 0.91rem; }
-.worksheet-link .r-sub { font-size: 0.78rem; color: var(--text-light); margin-top: 2px; }
-.worksheet-link .r-arrow { margin-left: auto; color: var(--text-light); }
+.worksheet-link:hover { transform: translateX(3px); box-shadow: 0 4px 16px rgba(0,0,0,0.09); background: white; }
+.worksheet-link .r-title { font-weight: 700; font-size: 1rem; }
+.worksheet-link .r-sub { font-size: 0.8rem; color: var(--text-mid); margin-top: 3px; }
+.worksheet-link .r-arrow {
+  margin-left: auto; flex-shrink: 0;
+  background: var(--ws-color, var(--sage)); color: white;
+  border-radius: 20px; padding: 4px 12px; font-size: 0.78rem; font-weight: 600;
+  white-space: nowrap;
+}
 
 .coming-soon {
   display: flex; align-items: center; gap: 12px;

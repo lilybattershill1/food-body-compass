@@ -59,6 +59,14 @@ function startPlay(btn, playerDiv) {
   audio.play();
   btn.textContent = '⏸';
   currentPlayer = playerDiv;
+
+  // GA4: track which audio was played
+  if (typeof gtag !== 'undefined' && !playerDiv._tracked) {
+    const card = playerDiv.closest('.audio-card');
+    const title = card ? (card.querySelector('.a-title') || {}).textContent : playerDiv.dataset.src;
+    gtag('event', 'audio_play', { audio_title: title });
+    playerDiv._tracked = true; // only fire once per page load per track
+  }
 }
 
 function pausePlayer(playerDiv) {
@@ -115,3 +123,23 @@ document.querySelectorAll('.audio-card[data-next]').forEach(card => {
 
 // Eagerly load metadata for all players so duration shows on page load
 document.querySelectorAll('.player').forEach(playerDiv => getAudio(playerDiv));
+
+// ── GA4 click tracking ────────────────────────────────────────────────────
+
+// Worksheet / guided tool / guide cards (resources.html)
+document.querySelectorAll('a.resource-card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (typeof gtag === 'undefined') return;
+    const title = (card.querySelector('.rc-title') || {}).textContent;
+    gtag('event', 'resource_open', { resource_title: title });
+  });
+});
+
+// Situation cards (index.html homepage)
+document.querySelectorAll('a.situation-card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (typeof gtag === 'undefined') return;
+    const title = (card.querySelector('.card-title') || {}).textContent;
+    gtag('event', 'situation_select', { situation: title });
+  });
+});

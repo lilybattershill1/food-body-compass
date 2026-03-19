@@ -7,7 +7,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-LHEJ1YYFY5');
   </script>
 <meta charset="UTF-8">
@@ -23,27 +22,26 @@
 
 /* ── TOKENS ── */
 :root {
-  --teal:        #2a7f7f;
-  --teal-mid:    #5aafaf;
-  --teal-light:  #e6f4f4;
+  --ocean:       #3a6a8a;
+  --ocean-mid:   #5a9ab8;
+  --ocean-light: #e8f2f8;
   --sage:        #4a7c59;
   --sage-light:  #eef5f0;
   --text:        #2d2926;
   --text-mid:    #5a5250;
   --text-light:  #8c8280;
-  --border:      #ccd8d8;
-  --bg:          #f7fbfb;
+  --border:      #ccd4d8;
+  --bg:          #f7fafc;
   --radius:      10px;
 }
 
 /* ── BASE ── */
-html { font-size: 15px; }
+html { font-size: 15px; scroll-behavior: smooth; }
 body {
   font-family: 'DM Sans', Georgia, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
-  padding: 0;
 }
 
 /* ── SCREEN NAV ── */
@@ -59,67 +57,66 @@ body {
   border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
   transition: all 0.2s;
 }
-.ws-nav a:hover { color: var(--teal); border-color: var(--teal); }
-.download-btn {
-  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
-  cursor: pointer; background: var(--teal); color: white;
-  border: none; border-radius: 20px; padding: 8px 18px;
-  transition: opacity 0.2s; white-space: nowrap;
-}
-.download-btn:hover { opacity: 0.85; }
+.ws-nav a:hover { color: var(--ocean); border-color: var(--ocean); }
 .clear-btn {
   font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
   cursor: pointer; background: white; color: var(--text-light);
   border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px;
   transition: all 0.2s; white-space: nowrap;
 }
-.clear-btn:hover { color: var(--teal); border-color: var(--teal); }
+.clear-btn:hover { color: var(--ocean); border-color: var(--ocean); }
 
-/* ── WORKSHEET WRAPPER ── */
-.worksheet {
-  max-width: 760px; margin: 32px auto 64px;
-  padding: 48px 56px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 14px;
+/* ── PROGRESS BAR ── */
+.progress-wrap {
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 0 4px; gap: 0;
+}
+.prog-dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #e4dcd6; transition: all 0.35s; flex-shrink: 0;
+}
+.prog-dot.done { background: var(--ocean); }
+.prog-dot.active {
+  background: var(--ocean); transform: scale(1.45);
+  box-shadow: 0 0 0 3px #dceef8;
+}
+.prog-line {
+  width: 22px; height: 2px; background: #e4dcd6; flex-shrink: 0;
+  transition: background 0.35s;
+}
+.prog-line.done { background: var(--ocean); }
+
+/* ── CONTAINER ── */
+.container { max-width: 600px; margin: 0 auto; padding: 0 22px 90px; }
+
+/* ── STEP SYSTEM ── */
+.ws-step { display: none; }
+.ws-step.active { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── HEADER ── */
-.ws-header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 2px solid var(--teal-light); }
-.ws-header h1 {
+/* ── STEP LABEL ── */
+.step-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--text-light); margin: 24px 0 6px;
+}
+
+/* ── STEP HEADING ── */
+.step-heading {
   font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1.55rem; color: var(--teal); line-height: 1.3; margin-bottom: 8px;
+  font-size: 1.45rem; color: var(--ocean);
+  line-height: 1.3; margin-bottom: 16px;
 }
-.ws-header .subtitle {
-  font-size: 0.82rem; color: var(--text-light); font-style: italic; margin-bottom: 20px;
-}
-.ws-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-.ws-meta-field { display: flex; align-items: baseline; gap: 8px; font-size: 0.85rem; color: var(--text-mid); }
-.ws-meta-field input {
-  border: none; border-bottom: 1px solid var(--border);
-  background: transparent; font-family: inherit; font-size: 0.85rem;
-  color: var(--text); outline: none; width: 140px;
-}
-.ws-meta-field input:focus { border-bottom-color: var(--teal); }
 
-/* ── SECTIONS ── */
-.ws-section { margin-bottom: 44px; }
-.ws-section-heading {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1.1rem; color: var(--teal);
-  border-left: 3px solid var(--teal);
-  padding-left: 12px; margin-bottom: 10px;
-}
-.ws-section-number {
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--teal-mid); margin-bottom: 4px;
-}
-.ws-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
+/* ── INTRO TEXT ── */
+.ws-section-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
 
 /* ── GROUNDING BLOCK ── */
 .grounding-block {
-  background: var(--teal-light);
-  border-left: 4px solid var(--teal-mid);
+  background: var(--ocean-light);
+  border-left: 4px solid var(--ocean-mid);
   border-radius: 0 var(--radius) var(--radius) 0;
   padding: 18px 22px;
   font-size: 0.92rem; line-height: 1.75; color: var(--text);
@@ -135,12 +132,12 @@ body {
 .write-area {
   width: 100%; min-height: 70px;
   border: 1px solid var(--border); border-radius: 6px;
-  background: var(--bg);
+  background: white;
   font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.9rem;
   color: var(--text); line-height: 1.7;
   padding: 10px 12px; resize: vertical; outline: none;
 }
-.write-area:focus { border-color: var(--teal); }
+.write-area:focus { border-color: var(--ocean); }
 .write-area.short { min-height: 48px; }
 .write-area.tall  { min-height: 100px; }
 
@@ -150,20 +147,20 @@ body {
 }
 .scale-num {
   width: 38px; height: 38px; border-radius: 50%;
-  border: 1.5px solid var(--teal-mid);
+  border: 1.5px solid var(--ocean-mid);
   background: white;
   font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
   color: var(--text-mid); cursor: pointer; transition: all 0.15s; flex-shrink: 0;
 }
-.scale-num:hover { border-color: var(--teal); color: var(--teal); }
-.scale-num.selected { background: var(--teal); border-color: var(--teal); color: white; }
+.scale-num:hover { border-color: var(--ocean); color: var(--ocean); }
+.scale-num.selected { background: var(--ocean); border-color: var(--ocean); color: white; }
 
 /* ── VALUES GRID ── */
 .values-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 8px; margin-top: 14px; margin-bottom: 16px;
 }
-@media (max-width: 540px) { .values-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .values-grid { grid-template-columns: repeat(3, 1fr); } }
 .value-btn {
   border: 1.5px solid var(--border); border-radius: 8px;
   padding: 10px 6px; text-align: center;
@@ -171,10 +168,10 @@ body {
   color: var(--text-mid); cursor: pointer; background: white;
   transition: all 0.15s; line-height: 1.2;
 }
-.value-btn:hover { border-color: var(--teal); color: var(--teal); }
-.value-btn.selected { background: var(--teal); border-color: var(--teal); color: white; font-weight: 600; }
+.value-btn:hover { border-color: var(--ocean); color: var(--ocean); }
+.value-btn.selected { background: var(--ocean); border-color: var(--ocean); color: white; font-weight: 600; }
 
-/* ── INLINE WRITE LINE ── */
+/* ── INLINE INPUT ── */
 .inline-write {
   display: flex; align-items: baseline; gap: 8px;
   font-size: 0.9rem; color: var(--text-mid); margin-top: 8px;
@@ -184,29 +181,15 @@ body {
   background: transparent; font-family: inherit; font-size: 0.9rem;
   color: var(--text); outline: none; flex: 1; min-width: 160px;
 }
-.inline-input:focus { border-bottom-color: var(--teal); }
+.inline-input:focus { border-bottom-color: var(--ocean); }
 
-/* ── DUMP LIST ── */
-.dump-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
-.dump-item { display: flex; align-items: flex-start; gap: 10px; }
-.dump-num {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1rem; color: var(--teal); flex-shrink: 0; padding-top: 7px; min-width: 22px;
-}
-.add-dump-btn {
-  margin-top: 10px; display: block; width: 100%;
-  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--teal);
-  background: none; border: 1px dashed var(--teal-mid);
-  border-radius: 6px; padding: 7px 14px; cursor: pointer; transition: all 0.15s;
-}
-.add-dump-btn:hover { background: var(--teal-light); }
-
+/* ── VALUE CUSTOM ── */
 .value-custom-wrap {
   border: 1.5px dashed var(--border); border-radius: 8px;
   padding: 7px 6px; background: white; transition: all 0.15s;
   display: flex; align-items: center; justify-content: center;
 }
-.value-custom-wrap.selected { border-color: var(--teal); background: var(--teal-light); }
+.value-custom-wrap.selected { border-color: var(--ocean); background: var(--ocean-light); }
 .value-custom-input {
   border: none; background: transparent; font-family: 'DM Sans', sans-serif;
   font-size: 0.85rem; color: var(--text-mid); outline: none; width: 100%;
@@ -214,16 +197,31 @@ body {
 }
 .value-custom-input::placeholder { color: var(--text-light); font-style: italic; }
 
+/* ── DUMP LIST ── */
+.dump-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.dump-item { display: flex; align-items: flex-start; gap: 10px; }
+.dump-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1rem; color: var(--ocean); flex-shrink: 0; padding-top: 7px; min-width: 22px;
+}
+.add-dump-btn {
+  margin-top: 10px; display: block; width: 100%;
+  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--ocean);
+  background: none; border: 1px dashed var(--ocean-mid);
+  border-radius: 6px; padding: 7px 14px; cursor: pointer; transition: all 0.15s;
+}
+.add-dump-btn:hover { background: var(--ocean-light); }
+
 /* ── DECISION GUIDE ── */
 .decision-guide {
-  background: var(--teal-light);
-  border-left: 4px solid var(--teal-mid);
+  background: var(--ocean-light);
+  border-left: 4px solid var(--ocean-mid);
   border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 16px 20px; margin-bottom: 18px;
+  padding: 14px 18px; margin-bottom: 16px;
   font-size: 0.88rem; line-height: 1.75; color: var(--text);
 }
-.decision-guide .guide-row { margin-bottom: 4px; }
-.decision-guide .guide-row strong { color: var(--teal); }
+.decision-guide .guide-row { margin-bottom: 3px; }
+.decision-guide .guide-row strong { color: var(--ocean); }
 
 /* ── SORT GRID ── */
 .sort-grid {
@@ -232,34 +230,32 @@ body {
 }
 .sort-box { border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .sort-box-label {
-  background: var(--teal-light); padding: 8px 14px;
+  background: var(--ocean-light); padding: 8px 14px;
   font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 0.95rem; color: var(--teal);
+  font-size: 0.95rem; color: var(--ocean);
   border-bottom: 1px solid var(--border);
 }
 .sort-area {
-  width: 100%; min-height: 110px;
+  width: 100%; min-height: 100px;
   border: none; background: white;
   font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.88rem;
   color: var(--text); line-height: 1.7;
   padding: 10px 12px; resize: vertical; outline: none;
 }
-.sort-area:focus { background: #fafffe; }
 
 /* ── REFLECTION PROMPT ── */
 .reflection-prompt {
-  font-size: 0.9rem; color: var(--text-mid); line-height: 1.7;
-  margin-bottom: 10px;
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 10px;
 }
-.reflection-prompt em { color: var(--teal); font-style: normal; font-weight: 600; }
+.reflection-prompt em { color: var(--ocean); font-style: normal; font-weight: 600; }
 
 /* ── SENTENCE STARTER ── */
-.sentence-block { margin-bottom: 22px; }
+.sentence-block { margin-bottom: 20px; }
 .sentence-stem {
   font-size: 0.92rem; color: var(--text-mid);
   font-style: italic; margin-bottom: 8px;
   padding-left: 12px;
-  border-left: 3px solid var(--teal-light);
+  border-left: 3px solid var(--ocean-light);
   line-height: 1.5;
 }
 
@@ -271,17 +267,36 @@ body {
   font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
   color: var(--text-mid); cursor: pointer; background: white; transition: all 0.15s;
 }
-.settle-btn:hover { border-color: var(--teal); color: var(--teal); }
-.settle-btn.selected { background: var(--teal); border-color: var(--teal); color: white; font-weight: 600; }
+.settle-btn:hover { border-color: var(--ocean); color: var(--ocean); }
+.settle-btn.selected { background: var(--ocean); border-color: var(--ocean); color: white; font-weight: 600; }
+
+/* ── SUMMARY ── */
+.summary-section { margin-bottom: 24px; }
+.summary-title {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-light); margin-bottom: 10px;
+}
+.summary-card {
+  background: white; border: 1.5px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.summary-row { padding: 12px 16px; border-bottom: 1px solid #f2eeeb; }
+.summary-row:last-child { border-bottom: none; }
+.s-key {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ocean-mid); margin-bottom: 4px;
+}
+.s-val { font-size: 0.9rem; color: var(--text); line-height: 1.55; }
+.s-empty { font-size: 0.88rem; color: var(--text-light); font-style: italic; }
 
 /* ── CLOSING BOX ── */
 .closing-box {
   background: var(--sage-light);
   border: 1.5px solid #b8d4c0;
   border-radius: var(--radius);
-  padding: 18px 22px;
+  padding: 20px 24px;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 28px;
 }
 .closing-box .closing-main {
   font-family: 'DM Serif Display', Georgia, serif;
@@ -289,15 +304,31 @@ body {
 }
 .closing-box p { font-size: 0.85rem; color: var(--text-mid); }
 
-/* ── DIVIDER ── */
-.ws-divider { border: none; border-top: 1.5px solid var(--teal-light); margin: 36px 0; }
+/* ── NAVIGATION BUTTONS ── */
+.btn-row { display: flex; gap: 10px; align-items: center; margin-top: 28px; }
+.btn-row .primary-btn { flex: 1; margin-top: 0; }
+.primary-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700;
+  background: var(--ocean); color: white; border: none;
+  border-radius: 28px; padding: 13px 28px;
+  cursor: pointer; display: block; width: 100%; margin-top: 10px;
+  transition: opacity 0.2s;
+}
+.primary-btn:hover { opacity: 0.88; }
+.secondary-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  background: white; color: var(--text-light); border: 1.5px solid var(--border);
+  border-radius: 28px; padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0; white-space: nowrap;
+}
+.secondary-btn:hover { border-color: var(--ocean); color: var(--ocean); }
 
 /* ── PROGRESS NOTICE ── */
 .progress-notice {
   background: #fffbeb; border: 1px solid #f6d860;
   border-radius: 8px; padding: 11px 16px;
   font-size: 0.82rem; color: #6b5800; line-height: 1.55;
-  margin: 16px 24px;
+  margin: 14px 22px;
 }
 .progress-notice strong { color: #4a3d00; }
 
@@ -305,37 +336,48 @@ body {
 </head>
 <body>
 
-<!-- Screen nav -->
 <div class="ws-nav">
-  <a href="index.html">← Back</a>
+  <a href="feeling-overwhelmed.html">← Back</a>
   <div style="display:flex;gap:8px;align-items:center">
     <button class="clear-btn" onclick="clearWorksheet()">↺ Clear all</button>
-    <button class="download-btn" onclick="downloadWorksheet()">⬇ Download</button>
   </div>
 </div>
 
 <div class="progress-notice">
-  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will. <strong>If you'd rather not risk it, consider writing your answers on paper instead.</strong>
+  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will.
 </div>
 
-<div class="worksheet">
+<!-- Progress dots -->
+<div class="progress-wrap" id="progress-wrap">
+  <div class="prog-dot active" id="pd-1"></div>
+  <div class="prog-line"       id="pl-1"></div>
+  <div class="prog-dot"        id="pd-2"></div>
+  <div class="prog-line"       id="pl-2"></div>
+  <div class="prog-dot"        id="pd-3"></div>
+  <div class="prog-line"       id="pl-3"></div>
+  <div class="prog-dot"        id="pd-4"></div>
+  <div class="prog-line"       id="pl-4"></div>
+  <div class="prog-dot"        id="pd-5"></div>
+  <div class="prog-line"       id="pl-5"></div>
+  <div class="prog-dot"        id="pd-6"></div>
+  <div class="prog-line"       id="pl-6"></div>
+  <div class="prog-dot"        id="pd-7"></div>
+  <div class="prog-line"       id="pl-7"></div>
+  <div class="prog-dot"        id="pd-8"></div>
+</div>
 
-  <!-- Header -->
-  <div class="ws-header">
-    <h1>Overwhelm Sorter</h1>
-    <p class="subtitle">A guided self-reflection tool &nbsp;·&nbsp; Based on ACT and values-based prioritisation</p>
-  </div>
+<div class="container" id="ws-container">
 
-  <!-- ── SECTION 1 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 1</div>
-    <div class="ws-section-heading">Body check-in</div>
-    <p class="ws-intro">Before anything else, just notice.</p>
+  <!-- ══ STEP 1 — Body check-in ══ -->
+  <div class="ws-step active" id="step-1">
+    <div class="step-label">Step 1 of 8</div>
+    <h1 class="step-heading">Body check-in</h1>
+    <p class="ws-section-intro">Before anything else, just notice.</p>
 
     <p class="write-prompt">Where are you feeling the overwhelm in your body right now?</p>
     <textarea class="write-area" placeholder="Write here…"></textarea>
 
-    <p class="write-prompt" style="margin-top:20px">On a scale of 1–10, how overwhelmed do you feel right now? Circle one:</p>
+    <p class="write-prompt" style="margin-top:20px">On a scale of 1–10, how overwhelmed do you feel right now?</p>
     <div class="scale-row">
       <button class="scale-num" onclick="selectScale(this)">1</button>
       <button class="scale-num" onclick="selectScale(this)">2</button>
@@ -348,28 +390,35 @@ body {
       <button class="scale-num" onclick="selectScale(this)">9</button>
       <button class="scale-num" onclick="selectScale(this)">10</button>
     </div>
+
+    <div class="btn-row">
+      <button class="primary-btn" onclick="goTo(2)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 2 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 2</div>
-    <div class="ws-section-heading">Grounding</div>
+  <!-- ══ STEP 2 — Grounding ══ -->
+  <div class="ws-step" id="step-2">
+    <div class="step-label">Step 2 of 8</div>
+    <h1 class="step-heading">Grounding</h1>
 
     <div class="grounding-block">
       <p>You don't have to solve everything right now. Overwhelm is not a sign that you're failing — it's a sign that you care. Let's just take one step at a time.</p>
     </div>
-    <p class="ws-intro">Take three slow breaths before moving on.</p>
+    <p class="ws-section-intro">Take three slow breaths before moving on.</p>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(1)">← Back</button>
+      <button class="primary-btn" onclick="goTo(3)">I've taken my breaths →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 3 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 3</div>
-    <div class="ws-section-heading">What matters most</div>
-    <p class="ws-intro">These aren't the things you think you should prioritise. They're what you want your energy to be in service of today. <em>Circle up to 3.</em></p>
+  <!-- ══ STEP 3 — What matters most ══ -->
+  <div class="ws-step" id="step-3">
+    <div class="step-label">Step 3 of 8</div>
+    <h1 class="step-heading">What matters most</h1>
+    <p class="ws-section-intro">These aren't the things you think you should prioritise. They're what you want your energy to be in service of today. <em>Choose up to 3.</em></p>
 
     <div class="values-grid">
       <button class="value-btn" onclick="toggleValue(this)">Health</button>
@@ -393,15 +442,19 @@ body {
       <span>My values today:</span>
       <input class="inline-input" type="text" id="values-write" placeholder="&nbsp;">
     </div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(2)">← Back</button>
+      <button class="primary-btn" onclick="goTo(4)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 4 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 4</div>
-    <div class="ws-section-heading">The dump</div>
-    <p class="ws-intro">Don't filter. Just get it all out — tasks, worries, feelings, expectations, things people want from you, things you're telling yourself you should do.</p>
+  <!-- ══ STEP 4 — The dump ══ -->
+  <div class="ws-step" id="step-4">
+    <div class="step-label">Step 4 of 8</div>
+    <h1 class="step-heading">The dump</h1>
+    <p class="ws-section-intro">Don't filter. Just get it all out — tasks, worries, feelings, expectations, things people want from you, things you're telling yourself you should do.</p>
 
     <div class="dump-list">
       <div class="dump-item"><span class="dump-num">1.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
@@ -414,15 +467,19 @@ body {
       <div class="dump-item"><span class="dump-num">8.</span><textarea class="write-area short" style="flex:1" placeholder="Write here…"></textarea></div>
     </div>
     <button class="add-dump-btn" onclick="addDumpItem()">+ Add more</button>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(3)">← Back</button>
+      <button class="primary-btn" onclick="goTo(5)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 5 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 5</div>
-    <div class="ws-section-heading">Sort each item</div>
-    <p class="ws-intro">Go back to your list and write the number of each item in one of the boxes below. Use this to decide:</p>
+  <!-- ══ STEP 5 — Sort each item ══ -->
+  <div class="ws-step" id="step-5">
+    <div class="step-label">Step 5 of 8</div>
+    <h1 class="step-heading">Sort each item</h1>
+    <p class="ws-section-intro">Go back to your list and write the number of each item in one of the boxes below.</p>
 
     <div class="decision-guide">
       <div class="guide-row"><strong>Must Do</strong> — only you can do it, and it genuinely matters this week</div>
@@ -452,50 +509,54 @@ body {
 
     <p class="reflection-prompt">Look at your 'Let Go' box. Which of these are driven by fear or "should" rather than your values of <em id="values-echo">________________</em>? What would it mean to actually let them go?</p>
     <textarea class="write-area tall" placeholder="Write here…"></textarea>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(4)">← Back</button>
+      <button class="primary-btn" onclick="goTo(6)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 6 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 6</div>
-    <div class="ws-section-heading">Your plan</div>
-    <p class="ws-intro">Based on your sorting, complete these sentences:</p>
+  <!-- ══ STEP 6 — Your plan ══ -->
+  <div class="ws-step" id="step-6">
+    <div class="step-label">Step 6 of 8</div>
+    <h1 class="step-heading">Your plan</h1>
+    <p class="ws-section-intro">Based on your sorting, complete these sentences:</p>
 
     <div class="sentence-block">
       <p class="sentence-stem">The one or two things I will actually focus on today are…</p>
       <textarea class="write-area" placeholder="Write here…"></textarea>
     </div>
-
     <div class="sentence-block">
       <p class="sentence-stem">I give myself permission to not do…</p>
       <textarea class="write-area" placeholder="Write here…"></textarea>
     </div>
-
     <div class="sentence-block">
       <p class="sentence-stem">I will ask for help with…</p>
       <textarea class="write-area" placeholder="Write here…"></textarea>
     </div>
-
     <div class="sentence-block">
       <p class="sentence-stem">Something I can do less perfectly is…</p>
       <textarea class="write-area" placeholder="Write here…"></textarea>
     </div>
-
     <div class="sentence-block">
       <p class="sentence-stem">One small way I will care for myself today is…</p>
       <textarea class="write-area" placeholder="Write here…"></textarea>
     </div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(5)">← Back</button>
+      <button class="primary-btn" onclick="goTo(7)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 7 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 7</div>
-    <div class="ws-section-heading">Closing body check-in</div>
+  <!-- ══ STEP 7 — Closing body check-in ══ -->
+  <div class="ws-step" id="step-7">
+    <div class="step-label">Step 7 of 8</div>
+    <h1 class="step-heading">Closing body check-in</h1>
 
-    <p class="ws-intro">Where are you in your body now, compared to when you started? Circle one:</p>
+    <p class="ws-section-intro">Where are you in your body now, compared to when you started?</p>
     <div class="settle-row">
       <button class="settle-btn" onclick="selectSettle(this)">More settled</button>
       <button class="settle-btn" onclick="selectSettle(this)">About the same</button>
@@ -504,25 +565,140 @@ body {
 
     <p class="write-prompt">One thing I want to remember from this:</p>
     <textarea class="write-area" placeholder="Write here…"></textarea>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(6)">← Back</button>
+      <button class="primary-btn" onclick="goTo(8)">Next →</button>
+    </div>
   </div>
 
-  <!-- Closing -->
-  <div class="closing-box">
-    <div class="closing-main">Clarity doesn't always mean having fewer things to do.</div>
-    <p>Sometimes it just means knowing what actually matters — and giving yourself permission to let the rest wait.</p>
+
+  <!-- ══ STEP 8 — Your results ══ -->
+  <div class="ws-step" id="step-8">
+    <div class="step-label">Step 8 of 8</div>
+    <h1 class="step-heading">Your results</h1>
+
+    <div id="summary-section" class="summary-section" style="display:none">
+      <div class="summary-title">Your session at a glance</div>
+      <div class="summary-card" id="summary-card"></div>
+    </div>
+
+    <div class="closing-box">
+      <div class="closing-main">Clarity doesn't always mean having fewer things to do.</div>
+      <p>Sometimes it just means knowing what actually matters — and giving yourself permission to let the rest wait.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(7)">← Back</button>
+      <button class="primary-btn" onclick="downloadWorksheet()">⬇ Download my answers</button>
+    </div>
+    <div class="btn-row" style="margin-top:10px">
+      <a class="secondary-btn" href="index.html" style="flex:1;text-align:center;text-decoration:none">🏠 Home</a>
+      <button class="secondary-btn" style="flex:1" onclick="restartWorksheet()">↩ Start worksheet again</button>
+    </div>
   </div>
 
-</div><!-- end worksheet -->
+</div><!-- end container -->
+
 
 <script>
-// ── Scale ────────────────────────────────────────────────────────────────
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+const TOTAL = 8;
+
+function goTo(n) {
+  document.querySelectorAll('.ws-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  for (let i = 1; i <= TOTAL; i++) {
+    const dot  = document.getElementById('pd-' + i);
+    const line = document.getElementById('pl-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n)       { dot.classList.add('done'); if (line) line.classList.add('done'); }
+    else if (i === n){ dot.classList.add('active'); }
+    else             { if (line) line.classList.remove('done'); }
+  }
+  if (n === TOTAL) { try { localStorage.setItem(STORAGE_KEY + '-done', '1'); } catch(e) {} buildSummary(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── SUMMARY ──────────────────────────────────────────────────────────────────
+function buildSummary() {
+  function taVal(step, idx) {
+    return document.querySelectorAll('#step-' + step + ' textarea')[idx]?.value.trim() || null;
+  }
+
+  // Step 1
+  const bodySensation = taVal(1, 0);
+  const level = document.querySelector('.scale-num.selected')?.textContent.trim();
+
+  // Step 3 — values
+  const selectedValues = [...document.querySelectorAll('.value-btn.selected')].map(b => b.textContent);
+  const customVal = document.getElementById('custom-value-input').value.trim();
+  if (customVal) selectedValues.push(customVal);
+  const valuesText = selectedValues.join(', ') || null;
+
+  // Step 4 — dump (non-empty items)
+  const dumpItems = [...document.querySelectorAll('#step-4 textarea')]
+    .map((ta, i) => ta.value.trim() ? `${i + 1}. ${ta.value.trim()}` : null)
+    .filter(Boolean);
+
+  // Step 5 — sort grid + reflection
+  const sortBoxes = [...document.querySelectorAll('#step-5 .sort-box')].map(box => ({
+    key: box.querySelector('.sort-box-label')?.textContent.trim(),
+    val: box.querySelector('textarea')?.value.trim() || null,
+  }));
+  const letGoReflection = taVal(5, 4);
+
+  // Step 6 — plan sentences
+  const planPrompts = [
+    'What I\'ll focus on today',
+    'Permission to not do',
+    'I\'ll ask for help with',
+    'I can do less perfectly',
+    'Self-care today',
+  ];
+
+  // Step 7
+  const settled = document.querySelector('.settle-btn.selected')?.textContent.trim();
+  const oneThingToRemember = taVal(7, 0);
+
+  const rows = [
+    { divider: true, label: 'Check-in' },
+    { key: 'Where I felt it', val: bodySensation },
+    { key: 'Overwhelm level', val: level ? level + ' / 10' : null },
+    { divider: true, label: 'Values' },
+    { key: 'What matters most today', val: valuesText },
+    { divider: true, label: 'The dump' },
+    { key: 'What\'s on my mind', val: dumpItems.length ? dumpItems.join('\n') : null },
+    { divider: true, label: 'Sorted' },
+    ...sortBoxes.filter(s => s.val),
+    { key: 'Letting go reflection', val: letGoReflection },
+    { divider: true, label: 'My plan' },
+    ...planPrompts.map((p, i) => ({ key: p, val: taVal(6, i) })),
+    { divider: true, label: 'Closing' },
+    { key: 'How I feel now', val: settled },
+    { key: 'One thing I want to remember', val: oneThingToRemember },
+  ].filter(r => r.divider || r.val);
+
+  const html = rows.map(r => {
+    if (r.divider) return `<div class="summary-row" style="padding:6px 16px;background:#edf4f8"><div class="s-key" style="margin:0">${r.label}</div></div>`;
+    const display = r.val
+      ? `<div class="s-val" style="white-space:pre-line">${r.val}</div>`
+      : `<div class="s-empty">Not completed</div>`;
+    return `<div class="summary-row"><div class="s-key">${r.key}</div>${display}</div>`;
+  }).join('');
+
+  document.getElementById('summary-card').innerHTML = html;
+  document.getElementById('summary-section').style.display = 'block';
+}
+
+// ── SCALE ─────────────────────────────────────────────────────────────────────
 function selectScale(btn) {
   document.querySelectorAll('.scale-num').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   saveProgress();
 }
 
-// ── Values ───────────────────────────────────────────────────────────────
+// ── VALUES ────────────────────────────────────────────────────────────────────
 function countSelectedValues() {
   const btnCount = document.querySelectorAll('.value-btn.selected').length;
   const customVal = document.getElementById('custom-value-input').value.trim();
@@ -538,9 +714,8 @@ function toggleValue(btn) {
 
 function handleCustomValue() {
   const input = document.getElementById('custom-value-input');
-  const wrap = document.getElementById('custom-value-wrap');
+  const wrap  = document.getElementById('custom-value-wrap');
   const hasText = input.value.trim().length > 0;
-  // If adding this would exceed 3 and it wasn't previously filled, block
   if (hasText && !wrap.classList.contains('selected') && countSelectedValues() > 3) {
     input.value = input.value.slice(0, -1);
     return;
@@ -557,7 +732,7 @@ function updateValuesEcho() {
   document.getElementById('values-echo').textContent = selected.length ? selected.join(', ') : '________________';
 }
 
-// ── Dump ─────────────────────────────────────────────────────────────────
+// ── DUMP ──────────────────────────────────────────────────────────────────────
 let dumpCount = 8;
 
 function addDumpItem() {
@@ -572,69 +747,77 @@ function addDumpItem() {
   saveProgress();
 }
 
-// ── Settle ───────────────────────────────────────────────────────────────
+// ── SETTLE ────────────────────────────────────────────────────────────────────
 function selectSettle(btn) {
   document.querySelectorAll('.settle-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   saveProgress();
 }
 
-// ── Download as PDF ───────────────────────────────────────────────────────
+// ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
 async function downloadWorksheet() {
-  const btn = document.querySelector('.download-btn');
-  btn.textContent = 'Generating…';
-  btn.disabled = true;
+  const downloadBtn = document.querySelector('.primary-btn[onclick*="download"]');
+  if (downloadBtn) { downloadBtn.textContent = 'Generating…'; downloadBtn.disabled = true; }
 
-  const nav = document.querySelector('.ws-nav');
-  const notice = document.querySelector('.progress-notice');
-  const addBtn = document.querySelector('.add-dump-btn');
-  const ws = document.querySelector('.worksheet');
-  nav.style.display = 'none';
-  if (notice) notice.style.display = 'none';
+  const steps   = document.querySelectorAll('.ws-step');
+  const btnRows = document.querySelectorAll('.ws-step .btn-row');
+  const addBtn  = document.querySelector('.add-dump-btn');
+  const nav     = document.querySelector('.ws-nav');
+  const notice  = document.querySelector('.progress-notice');
+  const progBar = document.getElementById('progress-wrap');
+
+  steps.forEach(s => { s.style.display = 'block'; });
+  btnRows.forEach(r => r.style.display = 'none');
   if (addBtn) addBtn.style.display = 'none';
-  ws.style.marginTop = '0';
-  ws.style.borderRadius = '0';
+  nav.style.display = 'none';
+  if (notice)  notice.style.display  = 'none';
+  if (progBar) progBar.style.display = 'none';
 
   try {
     await html2pdf().set({
       margin: [12, 14, 12, 14],
       filename: 'Overwhelm-Sorter.pdf',
       image: { type: 'jpeg', quality: 0.97 },
-      html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false, scrollY: 0 },
+      html2canvas: { scale: 2, backgroundColor: '#f7fafc', useCORS: true, logging: false, scrollY: 0 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['avoid-all', 'css'] }
-    }).from(ws).save();
+    }).from(document.getElementById('ws-container')).save();
   } finally {
-    nav.style.display = '';
-    if (notice) notice.style.display = '';
+    steps.forEach(s => { s.style.display = ''; });
+    btnRows.forEach(r => r.style.display = '');
     if (addBtn) addBtn.style.display = '';
-    ws.style.marginTop = '';
-    ws.style.borderRadius = '';
-    btn.textContent = '⬇ Download';
-    btn.disabled = false;
+    nav.style.display = '';
+    if (notice)  notice.style.display  = '';
+    if (progBar) progBar.style.display = '';
+    if (downloadBtn) { downloadBtn.textContent = '⬇ Download my answers'; downloadBtn.disabled = false; }
   }
 }
 
-// ── Clear all ─────────────────────────────────────────────────────────────
-function clearWorksheet() {
-  if (!confirm('Clear all answers and start fresh?')) return;
-  try { localStorage.removeItem('ws-overwhelm-v1'); } catch(e) {}
+// ── CLEAR ALL ─────────────────────────────────────────────────────────────────
+function resetAnswers() {
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_KEY + '-done'); } catch(e) {}
   document.querySelectorAll('textarea').forEach(el => el.value = '');
   document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
   document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
   document.querySelectorAll('.value-btn').forEach(el => el.classList.remove('selected'));
-  document.querySelectorAll('.scale-btn').forEach(el => el.classList.remove('selected'));
-  // Remove any extra dump rows added via + Add more, keeping only the original 8
+  document.querySelectorAll('.scale-num').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.settle-btn').forEach(el => el.classList.remove('selected'));
   const list = document.querySelector('.dump-list');
   if (list) {
     const items = list.querySelectorAll('.dump-item');
     items.forEach((item, i) => { if (i >= 8) item.remove(); });
     dumpCount = 8;
   }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateValuesEcho();
+  goTo(1);
 }
+function clearWorksheet() {
+  if (!confirm('Clear all answers and start fresh?')) return;
+  resetAnswers();
+}
+function restartWorksheet() { resetAnswers(); }
 
-// ── Auto-save ────────────────────────────────────────────────────────────
+// ── AUTO-SAVE ─────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'ws-overwhelm-v1';
 
 function saveProgress() {
@@ -651,11 +834,11 @@ function saveProgress() {
 
 function loadProgress() {
   try {
+    if (localStorage.getItem(STORAGE_KEY + '-done')) { resetAnswers(); return; }
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return;
     const data = JSON.parse(saved);
 
-    // Restore extra dump rows before filling textarea values
     if (data['dumpCount'] && data['dumpCount'] > 8) {
       for (let i = 9; i <= data['dumpCount']; i++) {
         dumpCount = i;

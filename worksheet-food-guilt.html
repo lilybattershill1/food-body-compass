@@ -7,7 +7,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-LHEJ1YYFY5');
   </script>
 <meta charset="UTF-8">
@@ -37,13 +36,12 @@
 }
 
 /* ── BASE ── */
-html { font-size: 15px; }
+html { font-size: 15px; scroll-behavior: smooth; }
 body {
   font-family: 'DM Sans', Georgia, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
-  padding: 0;
 }
 
 /* ── SCREEN NAV ── */
@@ -75,48 +73,70 @@ body {
 }
 .clear-btn:hover { color: var(--mauve); border-color: var(--mauve); }
 
-/* ── WORKSHEET WRAPPER ── */
-.worksheet {
-  max-width: 760px; margin: 32px auto 64px;
-  padding: 48px 56px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 14px;
+/* ── PROGRESS BAR ── */
+.progress-wrap {
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 0 4px; gap: 0;
+}
+.prog-dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: #e4dcd6; transition: all 0.35s; flex-shrink: 0;
+}
+.prog-dot.done { background: var(--mauve); }
+.prog-dot.active {
+  background: var(--mauve); transform: scale(1.45);
+  box-shadow: 0 0 0 3px #f5eaf2;
+}
+.prog-line {
+  width: 36px; height: 2px; background: #e4dcd6; flex-shrink: 0;
+  transition: background 0.35s;
+}
+.prog-line.done { background: var(--mauve); }
+
+/* ── CONTAINER ── */
+.container { max-width: 600px; margin: 0 auto; padding: 0 22px 90px; }
+
+/* ── STEP SYSTEM ── */
+.ws-step { display: none; }
+.ws-step.active { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── HEADER ── */
-.ws-header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 2px solid var(--mauve-light); }
-.ws-header h1 {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1.55rem; color: var(--mauve); line-height: 1.3; margin-bottom: 8px;
+/* ── STEP LABEL ── */
+.step-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.13em;
+  text-transform: uppercase; color: var(--text-light); margin: 24px 0 6px;
 }
-.ws-header .subtitle {
-  font-size: 0.82rem; color: var(--text-light); font-style: italic; margin-bottom: 20px;
-}
-.ws-meta { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-.ws-meta-field { display: flex; align-items: baseline; gap: 8px; font-size: 0.85rem; color: var(--text-mid); }
-.ws-meta-field input {
-  border: none; border-bottom: 1px solid var(--border);
-  background: transparent; font-family: inherit; font-size: 0.85rem;
-  color: var(--text); outline: none; width: 140px;
-}
-.ws-meta-field input:focus { border-bottom-color: var(--mauve); }
 
-/* ── SECTIONS ── */
-.ws-section { margin-bottom: 44px; }
-.ws-section-heading {
+/* ── STEP HEADING ── */
+.step-heading {
   font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 1.1rem; color: var(--mauve);
-  border-left: 3px solid var(--mauve);
-  padding-left: 12px; margin-bottom: 10px;
+  font-size: 1.45rem; color: var(--mauve);
+  line-height: 1.3; margin-bottom: 16px;
 }
-.ws-section-number {
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--mauve-mid); margin-bottom: 4px;
+
+/* ── INTRO CARD ── */
+.intro-card {
+  background: var(--mauve-light); border: 1.5px solid #ddd0ec;
+  border-radius: 12px; padding: 14px 18px;
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 20px;
 }
-.ws-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
+
+/* ── READING BLOCK ── */
+.reading-block {
+  background: var(--mauve-light);
+  border-left: 4px solid var(--mauve-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 22px;
+  font-size: 0.92rem; line-height: 1.75; color: var(--text);
+  margin-bottom: 16px;
+}
+.reading-block p + p { margin-top: 10px; }
 
 /* ── CHECKLIST ── */
+.ws-section-intro { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
 .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .checklist li {
   display: flex; align-items: flex-start; gap: 10px;
@@ -131,8 +151,7 @@ body {
   background: white; position: relative;
 }
 .checklist li input[type="checkbox"]:checked {
-  background: var(--mauve);
-  border-color: var(--mauve);
+  background: var(--mauve); border-color: var(--mauve);
 }
 .checklist li input[type="checkbox"]:checked::after {
   content: '';
@@ -142,23 +161,13 @@ body {
   transform: rotate(45deg);
 }
 
-/* inline text input (e.g. "My own rule: ___") */
+/* ── INLINE INPUT ── */
 .inline-input {
   border: none; border-bottom: 1px solid var(--border);
   background: transparent; font-family: inherit; font-size: 0.9rem;
   color: var(--text); outline: none; flex: 1; min-width: 160px;
 }
 .inline-input:focus { border-bottom-color: var(--mauve); }
-
-/* ── READING PASSAGE ── */
-.reading-block {
-  background: var(--mauve-light);
-  border-left: 4px solid var(--mauve-mid);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 18px 22px;
-  font-size: 0.92rem; line-height: 1.75; color: var(--text);
-}
-.reading-block p + p { margin-top: 10px; }
 
 /* ── WRITE AREA ── */
 .write-prompt {
@@ -168,24 +177,14 @@ body {
 .write-area {
   width: 100%; min-height: 110px;
   border: 1px solid var(--border); border-radius: 6px;
-  background: var(--bg);
+  background: white;
   font-family: 'DM Sans', Georgia, sans-serif; font-size: 0.9rem;
   color: var(--text); line-height: 1.7;
   padding: 10px 12px; resize: vertical; outline: none;
 }
 .write-area:focus { border-color: var(--mauve); }
 
-/* ── PROGRESS NOTICE ── */
-.progress-notice {
-  background: #fffbeb; border: 1px solid #f6d860;
-  border-radius: 8px; padding: 11px 16px;
-  font-size: 0.82rem; color: #6b5800; line-height: 1.55;
-  margin: 16px 24px;
-}
-.progress-notice strong { color: #4a3d00; }
-
-
-/* ── SUBSECTION ── */
+/* ── SUB HEADING ── */
 .ws-sub-heading {
   font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--text-mid);
@@ -193,48 +192,37 @@ body {
 }
 
 /* ── CBT DIAGRAM ── */
-.cbt-wrapper { margin: 20px 0 10px; }
+.cbt-wrapper { margin: 16px 0 10px; }
 .cbt-row {
-  display: flex; align-items: stretch; gap: 0; margin-bottom: 0;
-  position: relative;
+  display: flex; align-items: stretch; gap: 0; flex-wrap: wrap;
 }
 .cbt-box {
-  flex: 1;
+  flex: 1; min-width: 80px;
   border: 2px solid var(--mauve-mid);
   border-radius: var(--radius);
-  padding: 14px 12px; text-align: center;
+  padding: 12px 10px; text-align: center;
   background: white;
 }
 .cbt-box-label {
   font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 0.92rem; color: var(--mauve); margin-bottom: 5px;
+  font-size: 0.9rem; color: var(--mauve); margin-bottom: 4px;
 }
 .cbt-box-example {
-  font-size: 0.78rem; color: var(--text-mid); font-style: italic; line-height: 1.45;
+  font-size: 0.76rem; color: var(--text-mid); font-style: italic; line-height: 1.4;
 }
 .cbt-arrow {
-  display: flex; align-items: center; padding: 0 6px;
-  font-size: 1.4rem; color: var(--mauve-mid); flex-shrink: 0;
-}
-.cbt-cycle {
-  display: flex; align-items: center; justify-content: flex-start;
-  gap: 6px; margin-top: 4px;
-  padding: 8px 12px;
-  background: var(--mauve-light); border-radius: var(--radius);
-  border: 1px dashed var(--mauve-mid);
-}
-.cbt-cycle-text {
-  font-size: 0.8rem; color: var(--mauve); font-style: italic;
+  display: flex; align-items: center; padding: 0 5px;
+  font-size: 1.2rem; color: var(--mauve-mid); flex-shrink: 0;
 }
 .cbt-note {
   font-size: 0.8rem; color: var(--text-light); font-style: italic;
   margin-top: 8px; text-align: center;
 }
 
-/* ── COMMITMENT BOX ── */
+/* ── COMMITMENT ── */
 .commitment-options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .commitment-options li {
-  display: flex; align-items: center; gap: 10px; font-size: 0.9rem;
+  display: flex; align-items: center; gap: 10px; font-size: 0.9rem; list-style: none;
 }
 .commitment-options li input[type="checkbox"] {
   flex-shrink: 0;
@@ -255,14 +243,33 @@ body {
   transform: rotate(45deg);
 }
 
-/* ── CLOSING NOTE ── */
+/* ── SUMMARY ── */
+.summary-section { margin-bottom: 24px; }
+.summary-title {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-light); margin-bottom: 10px;
+}
+.summary-card {
+  background: white; border: 1.5px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.summary-row { padding: 12px 16px; border-bottom: 1px solid #f2eeeb; }
+.summary-row:last-child { border-bottom: none; }
+.s-key {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--mauve-mid); margin-bottom: 4px;
+}
+.s-val { font-size: 0.9rem; color: var(--text); line-height: 1.55; }
+.s-empty { font-size: 0.88rem; color: var(--text-light); font-style: italic; }
+
+/* ── CLOSING BOX ── */
 .closing-box {
   background: var(--sage-light);
   border: 1.5px solid #b8d4c0;
   border-radius: var(--radius);
-  padding: 18px 22px;
+  padding: 20px 24px;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 28px;
 }
 .closing-box .closing-main {
   font-family: 'DM Serif Display', Georgia, serif;
@@ -270,15 +277,41 @@ body {
 }
 .closing-box p { font-size: 0.85rem; color: var(--text-mid); }
 
-/* ── DIVIDER ── */
-.ws-divider { border: none; border-top: 1.5px solid var(--mauve-light); margin: 36px 0; }
+/* ── NAVIGATION BUTTONS ── */
+.btn-row { display: flex; gap: 10px; align-items: center; margin-top: 28px; }
+.btn-row .primary-btn { flex: 1; margin-top: 0; }
+.primary-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700;
+  background: var(--mauve); color: white; border: none;
+  border-radius: 28px; padding: 13px 28px;
+  cursor: pointer; display: block; width: 100%; margin-top: 10px;
+  transition: opacity 0.2s;
+}
+.primary-btn:hover { opacity: 0.88; }
+.secondary-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+  background: white; color: var(--text-light); border: 1.5px solid var(--border);
+  border-radius: 28px; padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0; white-space: nowrap;
+}
+.secondary-btn:hover { border-color: var(--mauve); color: var(--mauve); }
 
+/* ── DIVIDER ── */
+.ws-divider { border: none; border-top: 1.5px solid var(--mauve-light); margin: 28px 0; }
+
+/* ── PROGRESS NOTICE ── */
+.progress-notice {
+  background: #fffbeb; border: 1px solid #f6d860;
+  border-radius: 8px; padding: 11px 16px;
+  font-size: 0.82rem; color: #6b5800; line-height: 1.55;
+  margin: 14px 22px;
+}
+.progress-notice strong { color: #4a3d00; }
 
 </style>
 </head>
 <body>
 
-<!-- Screen nav -->
 <div class="ws-nav">
   <a href="feeling-guilty.html">← Back</a>
   <div style="display:flex;gap:8px;align-items:center">
@@ -288,22 +321,29 @@ body {
 </div>
 
 <div class="progress-notice">
-  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will. <strong>If you'd rather not risk it, consider writing your answers on paper instead.</strong>
+  💾 <strong>Your answers are saved automatically on this device</strong> — closing this tab or putting your phone to sleep won't lose them. But clearing your browser data or switching to a different device will.
 </div>
 
-<div class="worksheet">
+<!-- Progress dots -->
+<div class="progress-wrap" id="progress-wrap">
+  <div class="prog-dot active" id="pd-1"></div>
+  <div class="prog-line"       id="pl-1"></div>
+  <div class="prog-dot"        id="pd-2"></div>
+  <div class="prog-line"       id="pl-2"></div>
+  <div class="prog-dot"        id="pd-3"></div>
+  <div class="prog-line"       id="pl-3"></div>
+  <div class="prog-dot"        id="pd-4"></div>
+  <div class="prog-line"       id="pl-4"></div>
+  <div class="prog-dot"        id="pd-5"></div>
+</div>
 
-  <!-- Header -->
-  <div class="ws-header">
-    <h1>Feeling Guilty for What or How I Just Ate</h1>
-    <p class="subtitle">A guided self-reflection tool &nbsp;·&nbsp; Based on CBT and intuitive eating principles</p>
-  </div>
+<div class="container" id="ws-container">
 
-  <!-- ── SECTION 1 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 1</div>
-    <div class="ws-section-heading">What's driving the guilt?</div>
-    <p class="ws-intro">You're feeling guilty about something you ate, or the way you ate. Which of these beliefs is driving the guilt? <em>Circle or tick up to 2.</em></p>
+  <!-- ══ STEP 1 — What's driving the guilt? ══ -->
+  <div class="ws-step active" id="step-1">
+    <div class="step-label">Step 1 of 5</div>
+    <h1 class="step-heading">What's driving the guilt?</h1>
+    <p class="ws-section-intro">You're feeling guilty about something you ate, or the way you ate. Which of these beliefs is driving the guilt? <em>Tick up to 2.</em></p>
     <ul class="checklist">
       <li><input type="checkbox"><span>I ate more than I think I should have</span></li>
       <li><input type="checkbox"><span>I ate something I usually try to avoid</span></li>
@@ -315,27 +355,32 @@ body {
       <li><input type="checkbox"><span>I just feel… wrong or gross after eating</span></li>
       <li><input type="checkbox"><span>I'm not sure — it's just guilt</span></li>
     </ul>
+    <div class="btn-row">
+      <button class="primary-btn" onclick="goTo(2)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 2 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 2</div>
-    <div class="ws-section-heading">Where guilt comes from</div>
+  <!-- ══ STEP 2 — Where guilt comes from ══ -->
+  <div class="ws-step" id="step-2">
+    <div class="step-label">Step 2 of 5</div>
+    <h1 class="step-heading">Where guilt comes from</h1>
     <div class="reading-block">
       <p>Guilt is a learned response. It often comes from rules — spoken or unspoken — that you've internalised about how you're "supposed" to eat. These rules didn't come from your body. They came from culture, diet messages, other people's fears, and a world that treats food as a moral issue.</p>
       <p>But here's the truth: eating is not a moral issue. You didn't do anything wrong. You don't have to earn food, or punish yourself for needing it. Your worth is not determined by what you ate today.</p>
     </div>
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(1)">← Back</button>
+      <button class="primary-btn" onclick="goTo(3)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 3 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 3</div>
-    <div class="ws-section-heading">What rule got triggered?</div>
-    <p class="ws-intro">Guilt often shows up when you break an internalised food rule — one you never actually chose. Can you spot the rule underneath this guilt? <em>Circle or tick up to 2.</em></p>
+  <!-- ══ STEP 3 — What rule got triggered? ══ -->
+  <div class="ws-step" id="step-3">
+    <div class="step-label">Step 3 of 5</div>
+    <h1 class="step-heading">What rule got triggered?</h1>
+    <p class="ws-section-intro">Guilt often shows up when you break an internalised food rule — one you never actually chose. Can you spot the rule underneath this guilt? <em>Tick up to 2.</em></p>
     <ul class="checklist">
       <li><input type="checkbox"><span>I shouldn't eat unless I'm really hungry</span></li>
       <li><input type="checkbox"><span>I shouldn't eat certain foods</span></li>
@@ -348,19 +393,20 @@ body {
       <li><input type="checkbox"><span>I don't deserve food unless I've been "good"</span></li>
       <li><input type="checkbox"><span>My own rule: <input class="inline-input" type="text" placeholder="&nbsp;"></span></li>
     </ul>
-
     <p class="write-prompt">Where did this rule come from? A parent, a diet, the culture around you?</p>
     <textarea class="write-area" placeholder="Write here…"></textarea>
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(2)">← Back</button>
+      <button class="primary-btn" onclick="goTo(4)">Next →</button>
+    </div>
   </div>
 
-  <hr class="ws-divider">
 
-  <!-- ── SECTION 4 ── -->
-  <div class="ws-section">
-    <div class="ws-section-number">Section 4</div>
-    <div class="ws-section-heading">Rewriting the rule</div>
+  <!-- ══ STEP 4 — Rewriting the rule ══ -->
+  <div class="ws-step" id="step-4">
+    <div class="step-label">Step 4 of 5</div>
+    <h1 class="step-heading">Rewriting the rule</h1>
 
-    <!-- 4a -->
     <div class="ws-sub-heading">4a — When you try to follow this rule, what happens? <em style="font-weight:400;text-transform:none;letter-spacing:0">(Select up to 2)</em></div>
     <ul class="checklist">
       <li><input type="checkbox"><span>I feel tense, anxious or obsessed with food</span></li>
@@ -370,7 +416,6 @@ body {
       <li><input type="checkbox"><span>I feel ashamed or not good enough</span></li>
     </ul>
 
-    <!-- 4b -->
     <div class="ws-sub-heading" style="margin-top:24px">4b — How is this rule getting in the way? <em style="font-weight:400;text-transform:none;letter-spacing:0">(Select up to 2)</em></div>
     <ul class="checklist">
       <li><input type="checkbox"><span>It makes me ignore hunger or cravings</span></li>
@@ -380,7 +425,6 @@ body {
       <li><input type="checkbox"><span>It turns food into a stress or moral issue</span></li>
     </ul>
 
-    <!-- 4c CBT diagram -->
     <div class="ws-sub-heading" style="margin-top:24px">4c — The cycle your rule creates</div>
     <div class="cbt-wrapper">
       <div class="cbt-row">
@@ -407,7 +451,6 @@ body {
       <p class="cbt-note">Notice how the rule creates the very suffering it claims to prevent.</p>
     </div>
 
-    <!-- 4d -->
     <div class="ws-sub-heading" style="margin-top:24px">4d — What's a kinder, more flexible approach? <em style="font-weight:400;text-transform:none;letter-spacing:0">(Choose up to 2, or write your own)</em></div>
     <ul class="checklist">
       <li><input type="checkbox"><span>I eat when I'm hungry, and sometimes for other reasons — and that's okay</span></li>
@@ -417,70 +460,166 @@ body {
       <li><input type="checkbox"><span>My own: <input class="inline-input" type="text" placeholder="&nbsp;"></span></li>
     </ul>
 
-    <!-- 4e -->
     <div class="ws-sub-heading" style="margin-top:28px">4e — Commitment</div>
-    <p class="ws-intro" style="margin-bottom:10px">Would you like to try living by this kinder rule — even just for today?</p>
+    <p class="ws-section-intro" style="margin-bottom:10px">Would you like to try living by this kinder rule — even just for today?</p>
     <ul class="commitment-options">
       <li><input type="checkbox"><span>Yes — I'll try</span></li>
       <li><input type="checkbox"><span>I'm open to it</span></li>
       <li><input type="checkbox"><span>Not yet — and that's okay</span></li>
     </ul>
 
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(3)">← Back</button>
+      <button class="primary-btn" onclick="goTo(5)">Next →</button>
+    </div>
   </div>
 
-  <!-- Closing -->
-  <div class="closing-box">
-    <div class="closing-main">You're not failing. You're unlearning.</div>
-    <p>This exercise helps you move from rigid rules to flexible care. That's how trust with food is rebuilt — slowly, gently, one moment at a time.</p>
+
+  <!-- ══ STEP 5 — Your results ══ -->
+  <div class="ws-step" id="step-5">
+    <div class="step-label">Step 5 of 5</div>
+    <h1 class="step-heading">Your results</h1>
+
+    <div id="summary-section" class="summary-section" style="display:none">
+      <div class="summary-title">Your session at a glance</div>
+      <div class="summary-card" id="summary-card"></div>
+    </div>
+
+    <div class="closing-box">
+      <div class="closing-main">You're not failing. You're unlearning.</div>
+      <p>This exercise helps you move from rigid rules to flexible care. That's how trust with food is rebuilt — slowly, gently, one moment at a time.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="secondary-btn" onclick="goTo(4)">← Back</button>
+      <button class="primary-btn" onclick="downloadWorksheet()">⬇ Download my answers</button>
+    </div>
+    <div class="btn-row" style="margin-top:10px">
+      <a class="secondary-btn" href="index.html" style="flex:1;text-align:center;text-decoration:none">🏠 Home</a>
+      <button class="secondary-btn" style="flex:1" onclick="restartWorksheet()">↩ Start worksheet again</button>
+    </div>
   </div>
 
-</div><!-- end worksheet -->
+</div><!-- end container -->
+
 
 <script>
-// ── Download as PDF ───────────────────────────────────────────────────────
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+const TOTAL = 5;
+
+function goTo(n) {
+  document.querySelectorAll('.ws-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  for (let i = 1; i <= TOTAL; i++) {
+    const dot  = document.getElementById('pd-' + i);
+    const line = document.getElementById('pl-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n)       { dot.classList.add('done'); if (line) line.classList.add('done'); }
+    else if (i === n){ dot.classList.add('active'); }
+    else             { if (line) line.classList.remove('done'); }
+  }
+  if (n === TOTAL) { try { localStorage.setItem(STORAGE_KEY + '-done', '1'); } catch(e) {} buildSummary(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── SUMMARY ──────────────────────────────────────────────────────────────────
+function buildSummary() {
+  function checkedLabels(scope) {
+    if (!scope) return [];
+    return [...scope.querySelectorAll('input[type="checkbox"]:checked')]
+      .map(cb => {
+        const span = cb.nextElementSibling;
+        const text = (span.childNodes[0]?.textContent || span.textContent).trim().replace(/:$/, '');
+        const inline = span.querySelector('input[type="text"]')?.value.trim();
+        return inline ? text + ' ' + inline : text;
+      }).filter(Boolean);
+  }
+  function listHtml(arr) {
+    return arr.length ? arr.map(v => `<div>· ${v}</div>`).join('') : null;
+  }
+  function taVal(step, idx) {
+    return document.querySelectorAll('#step-' + step + ' textarea')[idx]?.value.trim() || null;
+  }
+
+  const rows = [
+    { divider: true, label: 'The guilt' },
+    { key: 'What drove the guilt',        val: listHtml(checkedLabels(document.getElementById('step-1'))) },
+    { divider: true, label: 'The rule' },
+    { key: 'Rule I identified',           val: listHtml(checkedLabels(document.getElementById('step-3'))) },
+    { key: 'Where it came from',          val: taVal(3, 0) },
+    { divider: true, label: 'Its impact' },
+    { key: 'When I follow this rule',     val: listHtml(checkedLabels(document.querySelectorAll('#step-4 .checklist')[0])) },
+    { key: 'How it gets in the way',      val: listHtml(checkedLabels(document.querySelectorAll('#step-4 .checklist')[1])) },
+    { divider: true, label: 'Moving forward' },
+    { key: 'My kinder approach',          val: listHtml(checkedLabels(document.querySelectorAll('#step-4 .checklist')[2])) },
+    { key: 'My commitment',               val: listHtml(checkedLabels(document.querySelector('.commitment-options'))) },
+  ].filter(r => r.divider || r.val);
+
+  const html = rows.map(r => {
+    if (r.divider) return `<div class="summary-row" style="padding:6px 16px;background:#f8f5f3"><div class="s-key" style="margin:0">${r.label}</div></div>`;
+    return `<div class="summary-row"><div class="s-key">${r.key}</div><div class="s-val">${r.val}</div></div>`;
+  }).join('');
+
+  document.getElementById('summary-card').innerHTML = html;
+  document.getElementById('summary-section').style.display = 'block';
+}
+
+// ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
 async function downloadWorksheet() {
   const btn = document.querySelector('.download-btn');
   btn.textContent = 'Generating…';
   btn.disabled = true;
 
-  const nav = document.querySelector('.ws-nav');
-  const notice = document.querySelector('.progress-notice');
-  const ws = document.querySelector('.worksheet');
+  // Temporarily reveal all steps
+  const steps = document.querySelectorAll('.ws-step');
+  steps.forEach(s => { s.style.display = 'block'; });
+
+  const nav     = document.querySelector('.ws-nav');
+  const notice  = document.querySelector('.progress-notice');
+  const progBar = document.getElementById('progress-wrap');
   nav.style.display = 'none';
-  if (notice) notice.style.display = 'none';
-  ws.style.marginTop = '0';
-  ws.style.borderRadius = '0';
+  if (notice)  notice.style.display  = 'none';
+  if (progBar) progBar.style.display = 'none';
+
+  // Remove step-navigation btn-rows from PDF
+  const btnRows = document.querySelectorAll('.ws-step .btn-row');
+  btnRows.forEach(r => r.style.display = 'none');
 
   try {
     await html2pdf().set({
       margin: [12, 14, 12, 14],
       filename: 'Feeling-Guilty-Worksheet.pdf',
       image: { type: 'jpeg', quality: 0.97 },
-      html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false, scrollY: 0 },
+      html2canvas: { scale: 2, backgroundColor: '#fdfaf8', useCORS: true, logging: false, scrollY: 0 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['avoid-all', 'css'] }
-    }).from(ws).save();
+    }).from(document.getElementById('ws-container')).save();
   } finally {
+    steps.forEach(s => { s.style.display = ''; });
+    btnRows.forEach(r => r.style.display = '');
     nav.style.display = '';
-    if (notice) notice.style.display = '';
-    ws.style.marginTop = '';
-    ws.style.borderRadius = '';
+    if (notice)  notice.style.display  = '';
+    if (progBar) progBar.style.display = '';
     btn.textContent = '⬇ Download';
     btn.disabled = false;
   }
 }
 
-// ── Clear all ─────────────────────────────────────────────────────────────
-function clearWorksheet() {
-  if (!confirm('Clear all answers and start fresh?')) return;
-  try { localStorage.removeItem('ws-food-guilt-v1'); } catch(e) {}
+// ── CLEAR ALL ─────────────────────────────────────────────────────────────────
+function resetAnswers() {
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_KEY + '-done'); } catch(e) {}
   document.querySelectorAll('textarea').forEach(el => el.value = '');
   document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
   document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  goTo(1);
 }
+function clearWorksheet() {
+  if (!confirm('Clear all answers and start fresh?')) return;
+  resetAnswers();
+}
+function restartWorksheet() { resetAnswers(); }
 
-// ── Auto-save ────────────────────────────────────────────────────────────
+// ── AUTO-SAVE ─────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'ws-food-guilt-v1';
 
 function saveProgress() {
@@ -493,6 +632,7 @@ function saveProgress() {
 
 function loadProgress() {
   try {
+    if (localStorage.getItem(STORAGE_KEY + '-done')) { resetAnswers(); return; }
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return;
     const data = JSON.parse(saved);
