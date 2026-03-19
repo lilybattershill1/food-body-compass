@@ -173,6 +173,11 @@ body {
 .write-area.tall { min-height: 130px; }
 .write-area.short { min-height: 60px; }
 
+/* Prevent iOS auto-zoom on input focus */
+@media (max-width: 768px) {
+  .write-area, .inline-input { font-size: 16px; }
+}
+
 /* ── INLINE INPUT ── */
 .inline-input {
   border: none; border-bottom: 1px solid var(--border);
@@ -489,6 +494,9 @@ body {
     <p class="write-prompt">Was there a specific trigger, or did it build gradually?</p>
     <textarea class="write-area tall" placeholder="Write here…"></textarea>
 
+    <p class="write-prompt">Was restriction, or restrictive thoughts, anything to do with this? Were you worrying about how much you may need to eat later, or how much you have eaten?</p>
+    <textarea class="write-area tall" placeholder="Write here…"></textarea>
+
     <p class="write-prompt">What was I hoping the binge would give me or take away?</p>
     <textarea class="write-area tall" placeholder="Write here…"></textarea>
 
@@ -583,6 +591,7 @@ function buildSummary() {
   const reflectionPrompts = [
     'What I was feeling before',
     'The trigger',
+    'Restriction or restrictive thoughts',
     'What I hoped the binge would give me',
     'What I might do differently',
     'What I want to remember',
