@@ -245,24 +245,26 @@ nav {
 }
 .content-pill {
   display: inline-flex; align-items: center; gap: 6px;
-  background: var(--off-white); border: 1.5px solid var(--border);
+  background: var(--off-white); border: 1px solid var(--border);
   border-radius: 20px; padding: 5px 14px;
-  font-size: 0.8rem; font-weight: 600;
-  text-decoration: none; color: var(--text-mid);
+  font-size: 0.8rem; font-weight: 500;
+  text-decoration: none; color: var(--text-light);
   transition: all 0.15s;
 }
 .content-pill:hover {
-  background: var(--pill-color, var(--sage));
   border-color: var(--pill-color, var(--sage));
-  color: white;
+  color: var(--pill-color, var(--sage));
+  background: white;
 }
 .content-pill .pill-count {
-  background: var(--pill-color, var(--sage));
-  color: white; border-radius: 10px;
-  padding: 1px 7px; font-size: 0.72rem; font-weight: 700;
+  background: transparent;
+  color: var(--pill-color, var(--sage));
+  border-radius: 10px;
+  padding: 1px 6px; font-size: 0.72rem; font-weight: 600;
+  border: 1px solid color-mix(in srgb, var(--pill-color, var(--sage)) 30%, transparent);
 }
 .content-pill:hover .pill-count {
-  background: rgba(255,255,255,0.3);
+  border-color: color-mix(in srgb, var(--pill-color, var(--sage)) 50%, transparent);
 }
 
 /* Worksheet link */
